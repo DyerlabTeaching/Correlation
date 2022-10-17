@@ -19,9 +19,9 @@ At the end of this topic, you should be able to:
 
 This topic has the following general content.
 
- - [Slides](slides.html) for the topic.
- - A larger [Narrative](narrative.html) on correlation and permutation.
- - An [In Class](in-class.html) activity
+ - [Slides](https://dyerlabteaching.github.io/Correlation/slides.html) for the topic.
+ - A larger [narrative](https://dyerlabteaching.github.io/Correlation/narrative.html) on correlation and permutation.
+ - An [in-class](https://dyerlabteaching.github.io/Correlation/in-class.html) activity
 
 
 ## Contact Information
