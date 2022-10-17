@@ -1,16 +1,17 @@
-# Topic Title
+# Correaltions
 
 
 ## Impetus
 
-This is a description of the basic template file for a course component repository
+Measures of correlation allow you to tell the extent to which two variables systematically change, without assuming any functional relationships.
 
 ## Student Learning Objectives
 
 At the end of this topic, you should be able to:  
- - *Learning Objective 1* 
- - *Learning Objective 2*
- - *Learning Objective 3* 
+ - Understand the differences between parametric, non-parametric, and randomization methods for hypothesis testing. 
+ - Test the normality of data using the Shapiro-Wilks test.
+ - Perform basic transformations on data to attempt to get your data more representative of normal data sets.
+ - Use the `cor.test()` function for parametric and non-parametric data.
 
 ## Content
  - [Slides](slides.html)
