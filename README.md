@@ -22,6 +22,7 @@ This topic has the following general content.
  - [Slides](https://dyerlabteaching.github.io/Correlation/slides.html) for the topic.
  - A larger [narrative](https://dyerlabteaching.github.io/Correlation/narrative.html) on correlation and permutation.
  - An [in-class](https://dyerlabteaching.github.io/Correlation/in-class.html) activity
+ - A [video](https://youtu.be/mcjqdBwV8_U) recording of the lecture content (as I'll be out of town).
 
 
 ## Contact Information
