@@ -537,6 +537,7 @@ If $H_O$ is correct then *every permuted value should be as large as the origina
 :::
 ::: 
 
+
 ## Permuting "Under the Null"
 
 Shuffle the `y` variable and recalculate the test statistic 999 times.  
