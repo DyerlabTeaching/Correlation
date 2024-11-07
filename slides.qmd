@@ -24,6 +24,11 @@ theme_set( theme_minimal( base_size = 16))
 # Background {background-color="black" background-image="media/contour.png" background-size="initial" background-position="right"}
 
 
+## America's Cultural Treasure {background-color="black" background-image="media/NicolasCage.png"} 
+
+
+
+
 
 ## Example Data {.scrollable}
 
@@ -83,7 +88,7 @@ cor.test( df$`Nicolas Cage Movies`, df$`Drowning Deaths in Pools`)
 
 
 
-## Beer Judge Certification Program
+## Beer Judge Certification Program {.smaller}
 
 :::: {.columns}
 
@@ -181,8 +186,11 @@ summary( beer )
 
 ## Field Trip!    
 
+&nbsp;
 
-Too bad I'm not in RVA!
+<center>
+![](media/the-simpsons-homer-simpson.gif)
+</center>
 
 
 
@@ -267,7 +275,7 @@ data.frame( Distribution = rep(c("N(0,1)","N(10,1)", "N(0,5)"), each=N ),
 
 
 
-## Testing for Normality - Visualization
+## Visualizing Normality
 
 Visualizing the 'normality' of the data using built-in functions.
 
@@ -303,7 +311,9 @@ shapiro.test( beer$ABV_Min )
 ```
 
 :::{.fragment}
-Is Minimum ABV Normal?
+$H_O: Data\;are\;normal$
+
+Is Minimum ABV Normal?  
 :::
 
 
@@ -399,7 +409,7 @@ The samples you collect, and the way that you design your experiments are most i
 # Correlation Models {background-color="black" background-image="media/contour.png" background-size="initial" background-position="right"}
 
 
-## Parametric Correlation
+## Parametric Correlation {.smaller}
 
 ### The Pearson Product Moment Correlation
 
@@ -458,6 +468,7 @@ To alleviate some of the underlying *parametric assumptions*, we can use ranks o
 $\rho_{Spearman} = \frac{ \sum_{i=1}^N(R_{x_i} - \bar{R_{x}})(R_{y_i} - \bar{R_{y}})}{\sqrt{\sum_{i=1}^N(R_{x_i} - \bar{R_{x}})^2}\sqrt{\sum_{i=1}^N(R_{y_i} - \bar{R_{y}})^2}}$
 
 
+
 ## Non-Parametric Correlation - Spearman's Rho
 ```{r}
 #| echo: true
@@ -465,6 +476,13 @@ OG.FG.spearman <- cor.test( beer$OG_Max, beer$FG_Max,
                             method = "spearman" )
 OG.FG.spearman
 ```
+
+
+::: {.fragment}
+::: {.callout-important}
+Compare P-Values to Pearson Product Momement.
+:::
+:::
 
 
 
@@ -511,6 +529,13 @@ Now, we can go through the 999 `NA` values we put into that data frame and:
 2. Run the analysis    
 3. Store the statistic.  
 
+::: {.fragment}
+::: {.callout-tip}
+$H_O:$ There is no correlation.
+
+If $H_O$ is correct then *every permuted value should be as large as the original one.*
+:::
+::: 
 
 ## Permuting "Under the Null"
 
