@@ -53,8 +53,8 @@ head(df)
 
 ```{r}
 library( reshape2 )
-df %>%
-  melt( id = "Year" ) %>%
+df |>
+  melt( id = "Year" ) |>
   ggplot( aes( Year, value, color = variable) ) + 
   geom_line()  +  geom_point()  + 
   theme( legend.position = "top",legend.title = element_blank() )
@@ -64,7 +64,7 @@ df %>%
 ## &nbsp;
 
 ```{r}
-df %>%
+df |>
   ggplot( aes(`Nicolas Cage Movies`, `Drowning Deaths in Pools` ) ) +
   geom_point() + stat_smooth( formula=y ~ x, method='lm', se=FALSE, color = "red", size = 0.5) +
   geom_text( aes(x=1.5, y=115, label = paste( "Correlation = ", format( cor(df[,2],df[,3]), digits=3) ) ), size=6 )
@@ -177,7 +177,7 @@ Here are the raw characteristic data for the different styles.
 
 ```{r}
 beer_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
-read_csv( beer_url ) %>%
+read_csv( beer_url ) |>
   mutate( Yeast = factor(Yeast) ) -> beer
 summary( beer )
 ```
@@ -262,7 +262,7 @@ N <- 1000
 data.frame( Distribution = rep(c("N(0,1)","N(10,1)", "N(0,5)"), each=N ),
             Data = c( rnorm(N,0,1),
                       rnorm(N,10,1),
-                      rnorm(N,0,5) ) ) %>%
+                      rnorm(N,0,5) ) ) |>
   ggplot( aes( Data ) ) + 
   geom_histogram( alpha=0.75, 
                   bins = 50) + 
@@ -371,7 +371,7 @@ test_boxcox <- function( x, lambdas = seq(-1.1, 1.1, by = 0.015) ) {
 ```{r}
 #| echo: true
 vals <- test_boxcox( beer$ABV_Min ) 
-vals %>% ggplot( aes(Lambda, P) ) + geom_line()
+vals |> ggplot( aes(Lambda, P) ) + geom_line()
 ```
 
 

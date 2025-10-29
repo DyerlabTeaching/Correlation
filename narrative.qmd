@@ -1,7 +1,12 @@
 ---
 title: "Narrative Title"
-format: html
+format: 
+  html:
+    toc: true
+    code-tools: true
 ---
+
+![](https://github.com/DyerlabTeaching/Correlation/blob/main/media/Buoy.jpeg?raw=true)
 
 ```{r setup, include=FALSE}
 library( tidyverse )
@@ -24,29 +29,37 @@ df$`Drowning Deaths in Pools` <- c( 109, 102, 102, 98, 85, 95, 96, 98, 123, 94, 
 df
 ```
 
-If we look at these data by year, it does not look like there is much of a trend (at least temporally).
+If we look at these data by year, it does not look like there is much of a trend (at least temporally).  We've talked about the `tidyr::pivot_longer` approach to take data like this and manipulate it.  There is another way to do this using the `reshape2` library uwing the function `melt()`. I recommend you go take a look at that to see how this works as well.  Both are valid ways.
 
 ```{r}
 library( reshape2 )
-df %>%
-  melt( id = "Year" ) %>%
+df |>
+  melt( id = "Year" ) 
+```
+
+Let's plot this to see `through time` variation.
+
+```{r}
+df |>
+  melt( id = "Year" ) |> 
   ggplot( aes( Year, value, color = variable) ) + 
   geom_line()  +
-  geom_point()  
+  geom_point() 
 ```
+
+
 
 However, if we look at the two variables together we see an entirely different thing.
 
 ```{r}
-df %>%
+df |>
   ggplot( aes(`Nicolas Cage Movies`, 
               `Drowning Deaths in Pools` ) ) +
   geom_point( size=2 ) + 
   stat_smooth( formula=y ~ x,
                method='lm',
                se=FALSE,
-               color = "red",
-               size = 0.5) +
+               color = "red") +
   geom_text( aes(x=1.5,
                  y=115,
                  label = paste( "Correlation = ", 
@@ -58,10 +71,11 @@ df %>%
 And in fact, if we run the statistical test on these data.
 
 ```{r}
-cor.test( df$`Nicolas Cage Movies`, df$`Drowning Deaths in Pools`)
+cor.test( df$`Nicolas Cage Movies`, df$`Drowning Deaths in Pools`) -> fit.cage
+fit.cage
 ```
 
-We do in fact see a significant (P = 0.025) relationship.  
+We do in fact see a significant (P = `r format( fit.cage$p.value, digits=3) `) relationship.  
 
 Now, do we think that because Nicolas Cage makes more movies people are dying at an increased rate?  No.  These are spurious correlations, though do prove a point about causation.
 
@@ -106,9 +120,9 @@ For much of the statistics we use, there are underlying assumptions about the fo
 
 The normal distribution function is defined as:
 
-\[
+$$
 f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
-\]
+$$
 
 where $\mu$ and $\sigma$ are the true value of the underlying mean and standard deviation.  This distribution is denoted as $N(\mu,\sigma)$ and the differences in the mean value ($\mu$) and the variation measured by the standard deviation ($\sigma$) are shown below for $N(0,1)$, $N(0,5)$, and $N(10,1)$.
 
@@ -117,7 +131,7 @@ N <- 1000
 data.frame( Distribution = rep(c("N(0,1)","N(10,1)", "N(0,5)"), each=N ),
             Data = c( rnorm(N,0,1),
                       rnorm(N,10,1),
-                      rnorm(N,0,5) ) ) %>%
+                      rnorm(N,0,5) ) ) |>
   ggplot( aes( Data ) ) + 
   geom_histogram( alpha=0.75, 
                   bins = 50) + 
@@ -134,9 +148,9 @@ qqline( beer$ABV_Min, col="red")
 
 So, what we commonly see is most of the data falling along the line throughout the middle portion of the distribution and then deviating around the edges.  What this does not do is give you a statistic to test to see if we can reject the hypothesis $H_O: Data\;is\;normal$.  For this, we can use the Shapiro-Wilkes Normality test which produces the statistic:
 
-\[
+$$
 W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
-\]
+$$
 
 where $N$ is the number of samples, $a_i$ is a standardizing coeeficient, $x_i$ is the $i^{th}$ value of $x$, $\bar{x}$ is the mean of the observed values, and $R_{x_i}$ is the rank of the $x_i^{th}$ observation.
 
@@ -166,9 +180,9 @@ There are times when this can be a nice way to compare the
 
 *Box Cox* - In 1964, Box & Cox defined a *family* of transformations known as the Box/Cox.  This family is defined by a single parameter, $\lambda$, whose value may vary depending upon the data.  The original data, $x$, is then transformed using the following relationship
 
-\[
+$$
 \tilde{x} = \frac{x^\lambda - 1}{\lambda}
-\]
+$$
 
 **As long as $\lambda \ne 0$ (else we would be dividing by zero, which is not a good thing)!**  
 
@@ -194,7 +208,7 @@ test_boxcox <- function( x, lambdas = seq(-1.1, 1.1, by = 0.015) ) {
 vals <- test_boxcox( beer$ABV_Min ) 
 
 
-vals %>%
+vals |>
   ggplot( aes(Lambda, P) ) + 
   geom_line() + 
   ylab("P-Value")
@@ -237,9 +251,9 @@ The following types of correlation statistics are a sample of the most common ap
 
 By far, the most common correlation statistic we see is the Pearson Product Moment Correlation, denoted as $\rho$.  For two variables, $x$ and $y$, the correlation parameter is estimated as:
 
-\[
+$$
 \rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}
-\]
+$$
 
 The values of these data fall wihtin the range of: $-1 \le \rho \le +1$ with negative values indicating that when one variable goes up, the other goes down.  Positive values of a correlation indicate that both variable change systematically in the same direction (e.g., both up or both down).
 
@@ -249,9 +263,9 @@ Here are some examples of the distribution of two variables and their associated
 
 Significance testing for a correlation such as $\rho$ determine the extent to which we thing the value of is deviant from zero.  The Null Hypothesis is $H_O: \rho \ne 0$ and can be evaluated using the Student's t.test.  With large enough sample sizes, it can be approximated by: 
 
-\[
+$$
 t = r \frac{N-2}{1-r^2}
-\]
+$$
 
 However, we should probably rely upon `R` to look up the critical values of the statistic. 
 
@@ -274,9 +288,9 @@ Another way to de a correlation test that does not rely upon parametric assumpti
 
 The form of the estimator for this is almost identical to that of the Pearson statistic except that instead of the raw data, we are replacing values with the ranks of each value instead.  In doing so, there is a loss of the breadth of the raw data since we are just using ranks, and if the underlying data are poorly behaved because of outliers or other issues, this takes care of it.
 
-\[
+$$
 \rho_{Spearman} = \frac{ \sum_{i=1}^N(R_{x_i} - \bar{R_{x}})(R_{y_i} - \bar{R_{y}})}{\sqrt{\sum_{i=1}^N(R_{x_i} - \bar{R_{x}})^2}\sqrt{\sum_{i=1}^N(R_{y_i} - \bar{R_{y}})^2}}
-\]
+$$
 
 With the same data, it does provide potentially different estimates of the amount of correlation between the variables.
 
