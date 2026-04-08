@@ -1,9 +1,6 @@
 ---
-title: "Narrative Title"
-format: 
-  html:
-    toc: true
-    code-tools: true
+title: "Correlation"
+format: html
 ---
 
 ![](https://github.com/DyerlabTeaching/Correlation/blob/main/media/Buoy.jpeg?raw=true)
