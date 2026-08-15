@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -68,7 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="narrative_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="narrative_files/libs/quarto-html/anchor.min.js"></script>
 <link href="narrative_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="narrative_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="narrative_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="narrative_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="narrative_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="narrative_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -135,7 +135,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p>Correlation is a test to see if two variables change in a coordinate fashion. However, this does not imply they are functionally linked or causal in nature.</p>
 </blockquote>
-<p>Consider the following data consisting of the the decade from 1999 - 2009 and recording the number of movies each year by the actor Nicolas Cage (source IMDB) and the number of people who accidentally died by falling into a swimming pool (source U.S. Centers for Disease Control).</p>
+<p>Consider the following data consisting of the decade from 1999 - 2009 and recording the number of movies each year by the actor Nicolas Cage (source IMDB) and the number of people who accidentally died by falling into a swimming pool (source U.S. Centers for Disease Control).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">Year =</span> <span class="dv">1999</span><span class="sc">:</span><span class="dv">2009</span> )</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span><span class="st">`</span><span class="at">Nicolas Cage Movies</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>)</span>
@@ -156,7 +156,7 @@ window.Quarto = {
 11 2009                   4                      102</code></pre>
 </div>
 </div>
-<p>If we look at these data by year, it does not look like there is much of a trend (at least temporally). We’ve talked about the <code>tidyr::pivot_longer</code> approach to take data like this and manipulate it. There is another way to do this using the <code>reshape2</code> library uwing the function <code>melt()</code>. I recommend you go take a look at that to see how this works as well. Both are valid ways.</p>
+<p>If we look at these data by year, it does not look like there is much of a trend (at least temporally). We’ve talked about the <code>tidyr::pivot_longer</code> approach to take data like this and manipulate it. There is another way to do this using the <code>reshape2</code> library using the function <code>melt()</code>. I recommend you go take a look at that to see how this works as well. Both are valid ways.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( reshape2 )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -278,13 +278,13 @@ dbl (10): ABV_Min, ABV_Max, IBU_Min, IBU_Max, SRM_Min, SRM_Max, OG_Min, OG_M...
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( beer )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    Styles             Yeast              ABV_Min         ABV_Max      
- Length:100         Length:100         Min.   :2.400   Min.   : 3.200  
- Class :character   Class :character   1st Qu.:4.200   1st Qu.: 5.475  
- Mode  :character   Mode  :character   Median :4.600   Median : 6.000  
-                                       Mean   :4.947   Mean   : 6.768  
-                                       3rd Qu.:5.500   3rd Qu.: 8.000  
-                                       Max.   :9.000   Max.   :14.000  
+<pre><code>       Styles          Yeast        ABV_Min         ABV_Max      
+ Length   :100   Length   :100   Min.   :2.400   Min.   : 3.200  
+ N.unique :100   N.unique :  3   1st Qu.:4.200   1st Qu.: 5.475  
+ N.blank  :  0   N.blank  :  0   Median :4.600   Median : 6.000  
+ Min.nchar:  4   Min.nchar:  3   Mean   :4.947   Mean   : 6.768  
+ Max.nchar: 27   Max.nchar:  6   3rd Qu.:5.500   3rd Qu.: 8.000  
+                                 Max.   :9.000   Max.   :14.000  
     IBU_Min         IBU_Max          SRM_Min         SRM_Max     
  Min.   : 0.00   Min.   :  8.00   Min.   : 2.00   Min.   : 3.00  
  1st Qu.:15.00   1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00  
@@ -301,35 +301,34 @@ dbl (10): ABV_Min, ABV_Max, IBU_Min, IBU_Max, SRM_Min, SRM_Max, OG_Min, OG_M...
  Max.   :1.080   Max.   :1.130   Max.   :1.020   Max.   :1.040  </code></pre>
 </div>
 </div>
-<p>The data consist of the following categories of data. For all but he first two columns of data, a range is given for the appropriate values for each style with <code>Min</code> and <code>Max</code> values.</p>
+<p>The data consist of the following categories of data. For all but the first two columns of data, a range is given for the appropriate values for each style with <code>Min</code> and <code>Max</code> values.</p>
 <ul>
 <li><em>Styles</em> - The official name of the beer style. Yes, there is an international standard that is officiated by the <a href="https://bjcp.org/">Beer Judge Certification Program</a>.</li>
-<li><em>Yeast Type</em> - The species of yeast most commonly used for fermenation, consists of top fermenting Ale yeasts and bottom fermenting Lager yeasts.<br>
-</li>
+<li><em>Yeast Type</em> - The species of yeast most commonly used for fermentation, consists of top fermenting Ale yeasts and bottom fermenting Lager yeasts.</li>
 <li><em>ABV</em> - The amount of alcohol in the finished beer as a percentage of the volume. This is a non-negative numerical value.</li>
-<li><em>IBU</em> - The ‘International Bitterness Unit’ which roughly measures the amont of <span class="math inline">\(\alpha\)</span>-acids (asymptotically) added to the beer by the hops. This is a non-negative numerical value, with higher values indicating more bitter beer, though human ability to taste increasingly bitter beer is asymptotic.</li>
+<li><em>IBU</em> - The ‘International Bitterness Unit’ which roughly measures the amount of <span class="math inline">\(\alpha\)</span>-acids (asymptotically) added to the beer by the hops. This is a non-negative numerical value, with higher values indicating more bitter beer, though human ability to taste increasingly bitter beer is asymptotic.</li>
 <li><em>SRM</em> - The Standard Reference Method calibration measuring the color of the finished beer. This is a non-negative integer going from 1 - 40 (light straw color - dark opaque).</li>
 <li><em>OG</em> - The amount of dissolved sugars in the wort (the pre-beer liquid prior to putting in yeast and the initiation of fermentation), relative to pure water. This is a measurement ‘relative’ to water, which is 1.0. Values less than 1.0 have lower liquid densities than pure water and those greater than 1.0 have more dissolved sugars than pure water.</li>
-<li><em>FG</em> - The amount of dissolved sugars in the beer after fermentation has been completed. Same as above but the difference in <em>OG</em> and <em>FG</em> can tell us what the <em>ABV</em> should be. Hihger <em>FG</em> beers are more sweet and have more body than lower <em>OG</em> beers (which may appear to have a cleaner, drier, mouth feel—yes that is a real term as well).</li>
+<li><em>FG</em> - The amount of dissolved sugars in the beer after fermentation has been completed. Same as above but the difference in <em>OG</em> and <em>FG</em> can tell us what the <em>ABV</em> should be. Higher <em>FG</em> beers are more sweet and have more body than lower <em>OG</em> beers (which may appear to have a cleaner, drier, mouth feel—yes that is a real term as well).</li>
 </ul>
 <p>As we talk about correlations, we will use these as examples.</p>
 </section>
 <section id="parameters-estimates" class="level2">
 <h2 class="anchored" data-anchor-id="parameters-estimates">Parameters &amp; Estimates</h2>
-<p>In statistics, we have two kinds of entities, parameters and estimates, which are dualities of each other. The <code>TRUE</code> mean of a set of data is referred to by <span class="math inline">\(\mu\)</span> whereas the mean of the data we measured is referred to as <span class="math inline">\(\bar{x}\)</span>. The greek version is the <em>idealized</em> value for the parameter, something that we are striving to find the real estimate of. However, as a Frequentist, we can never actually get to that parameter (remember the actual population of data is infinite but we can only sample a small amount of it) and when we talk about the data associated with what we collect, we refer to it as a estimate and use normal variable names.</p>
+<p>In statistics, we have two kinds of entities, parameters and estimates, which are dualities of each other. The <code>TRUE</code> mean of a set of data is referred to by <span class="math inline">\(\mu\)</span> whereas the mean of the data we measured is referred to as <span class="math inline">\(\bar{x}\)</span>. The greek version is the <em>idealized</em> value for the parameter, something that we are striving to find the real estimate of. However, as a Frequentist, we can never actually get to that parameter (remember the actual population of data is infinite but we can only sample a small amount of it) and when we talk about the data associated with what we collect, we refer to it as an estimate and use normal variable names.</p>
 </section>
 <section id="parametric-assumptions" class="level2">
 <h2 class="anchored" data-anchor-id="parametric-assumptions">Parametric Assumptions</h2>
-<p>For much of the statistics we use, there are underlying assumptions about the form of the data that we shold look at.</p>
+<p>For much of the statistics we use, there are underlying assumptions about the form of the data that we should look at.</p>
 <section id="testing-for-normality." class="level3">
 <h3 class="anchored" data-anchor-id="testing-for-normality.">Testing for Normality.</h3>
 <blockquote class="blockquote">
 <p>The data can be estimated by a normal density function, or at least can be transformed into data that is reasonably normal in distribution.</p>
 </blockquote>
 <p>The normal distribution function is defined as:</p>
-<p><span class="math display">\[
+<p><mark> <span class="math display">\[
 f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
-\]</span></p>
+\]</span> </mark></p>
 <p>where <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the true value of the underlying mean and standard deviation. This distribution is denoted as <span class="math inline">\(N(\mu,\sigma)\)</span> and the differences in the mean value (<span class="math inline">\(\mu\)</span>) and the variation measured by the standard deviation (<span class="math inline">\(\sigma\)</span>) are shown below for <span class="math inline">\(N(0,1)\)</span>, <span class="math inline">\(N(0,5)\)</span>, and <span class="math inline">\(N(10,1)\)</span>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
@@ -365,7 +364,7 @@ f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
 <p><span class="math display">\[
 W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
 \]</span></p>
-<p>where <span class="math inline">\(N\)</span> is the number of samples, <span class="math inline">\(a_i\)</span> is a standardizing coeeficient, <span class="math inline">\(x_i\)</span> is the <span class="math inline">\(i^{th}\)</span> value of <span class="math inline">\(x\)</span>, <span class="math inline">\(\bar{x}\)</span> is the mean of the observed values, and <span class="math inline">\(R_{x_i}\)</span> is the rank of the <span class="math inline">\(x_i^{th}\)</span> observation.</p>
+<p>where <span class="math inline">\(N\)</span> is the number of samples, <span class="math inline">\(a_i\)</span> is a standardizing coefficient, <span class="math inline">\(x_i\)</span> is the <span class="math inline">\(i^{th}\)</span> value of <span class="math inline">\(x\)</span>, <span class="math inline">\(\bar{x}\)</span> is the mean of the observed values, and <span class="math inline">\(R_{x_i}\)</span> is the rank of the <span class="math inline">\(x_i^{th}\)</span> observation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>( beer<span class="sc">$</span>ABV_Min )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -380,19 +379,19 @@ W = 0.94595, p-value = 0.0004532</code></pre>
 </section>
 <section id="transformations" class="level3">
 <h3 class="anchored" data-anchor-id="transformations">Transformations</h3>
-<p>If the data are not normal, we can look towards trying to see if we can transform it to a normally distributed variable. There are a lot of</p>
+<p>If the data are not normal, we can look towards trying to see if we can transform it to a normally distributed variable. <mark>There are a lot of</mark></p>
 <p><em>Studentized Data</em> - One way to standardize the data is to make it have a mean of 0.0 and a standard deviation of 1.0. To do this, we subtract the <code>mean()</code> and divide by the <code>sd()</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> beer<span class="sc">$</span>ABV_Min </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>x.std <span class="ot">&lt;-</span> (x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">/</span> <span class="fu">sd</span>( x )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>There are times when this can be a nice way to compare the</p>
+<p><mark>There are times when this can be a nice way to compare the</mark></p>
 <p><em>Box Cox</em> - In 1964, Box &amp; Cox defined a <em>family</em> of transformations known as the Box/Cox. This family is defined by a single parameter, <span class="math inline">\(\lambda\)</span>, whose value may vary depending upon the data. The original data, <span class="math inline">\(x\)</span>, is then transformed using the following relationship</p>
 <p><span class="math display">\[
 \tilde{x} = \frac{x^\lambda - 1}{\lambda}
 \]</span></p>
 <p><strong>As long as <span class="math inline">\(\lambda \ne 0\)</span> (else we would be dividing by zero, which is not a good thing)!</strong></p>
-<p>One way to use this transformation is to look at a range of values for <span class="math inline">\(\lambda\)</span> and determine if the transformation</p>
+<p><mark>One way to use this transformation is to look at a range of values for <span class="math inline">\(\lambda\)</span> and determine if the transformation</mark></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>test_boxcox <span class="ot">&lt;-</span> <span class="cf">function</span>( x, <span class="at">lambdas =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>, <span class="at">by =</span> <span class="fl">0.015</span>) ) {</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  ret <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">Lambda =</span> lambdas,</span>
@@ -433,7 +432,7 @@ W = 0.94595, p-value = 0.0004532</code></pre>
 </div>
 </div>
 <p>with <span class="math inline">\(\lambda = 0.115\)</span> and a <span class="math inline">\(P = 0.044\)</span>.</p>
-<p><em>Arc-Sine Square Root</em> When dealing with fractions, it is common that they do not behave very well when they are very close to 0.0 or 1.0. One of the common transformations to use with these kinds of data is the arc-sin square root transformation. For us, the ABV columns in the data is a percentage (but listed in numerical form as percent not as fraction). So to transform it we can do the following.</p>
+<p><em>Arc-Sine Square Root</em> When dealing with fractions, it is common that they do not behave very well when they are very close to 0.0 or 1.0. One of the common transformations to use with these kinds of data is the arc-sin square root transformation. For us, the ABV columns in the data are percentages (but listed in numerical form as percent not as fraction). So to transform it we can do the following.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>abv <span class="ot">&lt;-</span> beer<span class="sc">$</span>ABV_Min <span class="sc">/</span> <span class="fl">100.0</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">asin</span>( <span class="fu">sqrt</span>( abv ) ) <span class="ot">-&gt;</span> abv<span class="fl">.1</span></span>
@@ -456,16 +455,17 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <h2 class="anchored" data-anchor-id="independence-of-data">Independence of Data</h2>
 <p>The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent. You need to think about this very carefully as you design your experiments.</p>
 </section>
-<section id="correlation-tests" class="level1">
-<h1>Correlation Tests</h1>
+<section id="correlation-tests" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-tests">Correlation Tests</h2>
 <p>The following types of correlation statistics are a sample of the most common approaches.</p>
+</section>
 <section id="parametric-test-pearson-product-moment-correlations" class="level2">
 <h2 class="anchored" data-anchor-id="parametric-test-pearson-product-moment-correlations">Parametric Test: Pearson Product Moment Correlations</h2>
 <p>By far, the most common correlation statistic we see is the Pearson Product Moment Correlation, denoted as <span class="math inline">\(\rho\)</span>. For two variables, <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, the correlation parameter is estimated as:</p>
 <p><span class="math display">\[
 \rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}
 \]</span></p>
-<p>The values of these data fall wihtin the range of: <span class="math inline">\(-1 \le \rho \le +1\)</span> with negative values indicating that when one variable goes up, the other goes down. Positive values of a correlation indicate that both variable change systematically in the same direction (e.g., both up or both down).</p>
+<p>The values of these data fall within the range of: <span class="math inline">\(-1 \le \rho \le +1\)</span> with negative values indicating that when one variable goes up, the other goes down. Positive values of a correlation indicate that both variable change systematically in the same direction (e.g., both up or both down).</p>
 <p>Here are some examples of the distribution of two variables and their associated correlation coefficient.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -473,7 +473,7 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <figcaption><em>Figure 1: Data and associated correlation statistics.</em></figcaption>
 </figure>
 </div>
-<p>Significance testing for a correlation such as <span class="math inline">\(\rho\)</span> determine the extent to which we thing the value of is deviant from zero. The Null Hypothesis is <span class="math inline">\(H_O: \rho \ne 0\)</span> and can be evaluated using the Student’s t.test. With large enough sample sizes, it can be approximated by:</p>
+<p><mark>Significance testing for a correlation such as <span class="math inline">\(\rho\)</span> determine the extent to which we thing the value of is deviant from zero.</mark> The Null Hypothesis is <span class="math inline">\(H_O: \rho \ne 0\)</span> and can be evaluated using the Student’s t.test. With large enough sample sizes, it can be approximated by:</p>
 <p><span class="math display">\[
 t = r \frac{N-2}{1-r^2}
 \]</span></p>
@@ -507,7 +507,7 @@ sample estimates:
 </section>
 <section id="non-parametric-test-spearmans-rho" class="level2">
 <h2 class="anchored" data-anchor-id="non-parametric-test-spearmans-rho">Non-Parametric Test: Spearman’s Rho</h2>
-<p>Another way to de a correlation test that does not rely upon parametric assumptions is to use non-parametric approaches. Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic. One of the constraints for non-parametric statistics is that they are often evaluated for probability based upon permutations.</p>
+<p>Another way to do a correlation test that does not rely upon parametric assumptions is to use non-parametric approaches. Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic. One of the constraints for non-parametric statistics is that they are often evaluated for probability based upon permutations.</p>
 <p>The form of the estimator for this is almost identical to that of the Pearson statistic except that instead of the raw data, we are replacing values with the ranks of each value instead. In doing so, there is a loss of the breadth of the raw data since we are just using ranks, and if the underlying data are poorly behaved because of outliers or other issues, this takes care of it.</p>
 <p><span class="math display">\[
 \rho_{Spearman} = \frac{ \sum_{i=1}^N(R_{x_i} - \bar{R_{x}})(R_{y_i} - \bar{R_{y}})}{\sqrt{\sum_{i=1}^N(R_{x_i} - \bar{R_{x}})^2}\sqrt{\sum_{i=1}^N(R_{y_i} - \bar{R_{y}})^2}}
@@ -518,7 +518,7 @@ sample estimates:
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">method =</span> <span class="st">"spearman"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(beer$OG_Max, beer$FG_Max, method = "spearman"):
-Cannot compute exact p-value with ties</code></pre>
+cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>OG.FG.spearman</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -536,8 +536,8 @@ sample estimates:
 </section>
 <section id="permutation-testing-for-significance" class="level2">
 <h2 class="anchored" data-anchor-id="permutation-testing-for-significance">Permutation Testing for Significance</h2>
-<p>In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we approximated using the <span class="math inline">\(t\)</span>. For the Spearman test with small numbers of samples, an approximation of the <span class="math inline">\(t\)</span> test is used, based upon counting ranks and the number of ways we can get different combinations of ranks. For larger sample size tests using Spearman, an approximation using the <span class="math inline">\(t\)</span> test can be used.</p>
-<p>Another way of doing this is based upon permutation and this approach can be applied to a wide array of questions. For correlation’s, if we consider the null hypothesis <span class="math inline">\(H_O: \rho = 0\)</span> we can make a few inferences. If this hypothesis is true then we are, essentially, saying that the current relationship between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> has no intrinsic relationship as there is no correlation. This is, by default, what the null hypothesis says.</p>
+<p>In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we approximated using the <span class="math inline">\(t\)</span>. <mark>For the Spearman test with small numbers of samples, an approximation of the <span class="math inline">\(t\)</span> test is used, based upon counting ranks and the number of ways we can get different combinations of ranks. For larger sample size tests using Spearman, an approximation using the <span class="math inline">\(t\)</span> test can be used.</mark></p>
+<p>Another way of doing this is based upon permutation and this approach can be applied to a wide array of questions. For correlations, if we consider the null hypothesis <span class="math inline">\(H_O: \rho = 0\)</span> we can make a few inferences. If this hypothesis is true then we are, essentially, saying that the current relationship between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> has no intrinsic relationship as there is no correlation. This is, by default, what the null hypothesis says.</p>
 <p>If that is true, however, that means that any permutation of one of the variables, say <span class="math inline">\(y\)</span>, should produce a correlation statistic that is just as large as any other permutation of the data. This is key.</p>
 <p>So, if we assume the <span class="math inline">\(H_O\)</span> is true then we should be able to shuffle one of the data and estimate a correlation statistic a large number of times. We can then create a permuted distribution of values for the correlation, <strong>Assuming the NULL Hypothesis is true.</strong> To this distribution, we can evaluate the magnitude of the original correlation. Here is an example using the data from above.</p>
 <div class="cell">
@@ -557,7 +557,7 @@ sample estimates:
                 Mean   :0.8374  
                 3rd Qu.:0.8374  
                 Max.   :0.8374  
-                NA's   :999     </code></pre>
+                NAs    :999     </code></pre>
 </div>
 </div>
 <p>Now, we can go through the 999 <code>NA</code> values we put into that data frame and:<br>
@@ -592,7 +592,6 @@ sample estimates:
 </div>
 </div>
 <p>If you look at the graph above, you see that the original value is <strong>way bigger</strong> than the values that would be found <code>if and only if</code> <span class="math inline">\(H_O\)</span> were true. This suggests that the correlation is not zero and in fact it is the largest observation of the 1000 observations (a P estimate of <span class="math inline">\(\frac{1}{1000}\)</span>…).</p>
-</section>
 </section>
 
 </main>

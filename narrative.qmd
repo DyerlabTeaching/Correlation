@@ -17,7 +17,7 @@ This topic is going to focus on developing the theory of correlations.
 > Correlation is a test to see if two variables change in a coordinate fashion.  However, this does not imply they are functionally linked or causal in nature.
 
 
-Consider the following data consisting of the the decade from 1999 - 2009 and recording the number of movies each year by the actor Nicolas Cage (source IMDB) and the number of people who accidentally died by falling into a swimming pool (source U.S. Centers for Disease Control).
+Consider the following data consisting of the decade from 1999 - 2009 and recording the number of movies each year by the actor Nicolas Cage (source IMDB) and the number of people who accidentally died by falling into a swimming pool (source U.S. Centers for Disease Control).
 
 ```{r}
 df <- data.frame( Year = 1999:2009 )
@@ -26,7 +26,7 @@ df$`Drowning Deaths in Pools` <- c( 109, 102, 102, 98, 85, 95, 96, 98, 123, 94, 
 df
 ```
 
-If we look at these data by year, it does not look like there is much of a trend (at least temporally).  We've talked about the `tidyr::pivot_longer` approach to take data like this and manipulate it.  There is another way to do this using the `reshape2` library uwing the function `melt()`. I recommend you go take a look at that to see how this works as well.  Both are valid ways.
+If we look at these data by year, it does not look like there is much of a trend (at least temporally).  We've talked about the `tidyr::pivot_longer` approach to take data like this and manipulate it.  There is another way to do this using the `reshape2` library using the function `melt()`. I recommend you go take a look at that to see how this works as well.  Both are valid ways.
 
 ```{r}
 library( reshape2 )
@@ -87,15 +87,15 @@ summary( beer )
 ```
 
 
-The data consist of the following categories of data.  For all but he first two columns of data, a range is given for the appropriate values for each style with `Min` and `Max` values.
+The data consist of the following categories of data.  For all but the first two columns of data, a range is given for the appropriate values for each style with `Min` and `Max` values.
 
 - *Styles* - The official name of the beer style.  Yes, there is an international standard that is officiated by the [Beer Judge Certification Program](https://bjcp.org/). 
-- *Yeast Type* - The species of yeast most commonly used for fermenation, consists of top fermenting Ale yeasts and bottom fermenting Lager yeasts.  
+- *Yeast Type* - The species of yeast most commonly used for fermentation, consists of top fermenting Ale yeasts and bottom fermenting Lager yeasts.
 - *ABV* - The amount of alcohol in the finished beer as a percentage of the volume.  This is a non-negative numerical value.
-- *IBU* - The 'International Bitterness Unit' which roughly measures the amont of $\alpha$-acids (asymptotically) added to the beer by the hops.  This is a non-negative numerical value, with higher values indicating more bitter beer, though human ability to taste increasingly bitter beer is asymptotic.
+- *IBU* - The 'International Bitterness Unit' which roughly measures the amount of $\alpha$-acids (asymptotically) added to the beer by the hops.  This is a non-negative numerical value, with higher values indicating more bitter beer, though human ability to taste increasingly bitter beer is asymptotic.
 - *SRM* - The Standard Reference Method calibration measuring the color of the finished beer.  This is a non-negative integer going from 1 - 40 (light straw color - dark opaque).
 - *OG* - The amount of dissolved sugars in the wort (the pre-beer liquid prior to putting in yeast and the initiation of fermentation), relative to pure water.  This is a measurement 'relative' to water, which is 1.0.  Values less than 1.0 have lower liquid densities than pure water and those greater than 1.0 have more dissolved sugars than pure water.
-- *FG* - The amount of dissolved sugars in the beer after fermentation has been completed.  Same as above but the difference in *OG* and *FG* can tell us what the *ABV* should be.  Hihger *FG* beers are more sweet and have more body than lower *OG* beers (which may appear to have a cleaner, drier, mouth feel—yes that is a real term as well).
+- *FG* - The amount of dissolved sugars in the beer after fermentation has been completed.  Same as above but the difference in *OG* and *FG* can tell us what the *ABV* should be.  Higher *FG* beers are more sweet and have more body than lower *OG* beers (which may appear to have a cleaner, drier, mouth feel—yes that is a real term as well).
 
 As we talk about correlations, we will use these as examples.
 
@@ -104,12 +104,12 @@ As we talk about correlations, we will use these as examples.
 
 ## Parameters & Estimates
 
-In statistics, we have two kinds of entities, parameters and estimates, which are dualities of each other.  The `TRUE` mean of a set of data is referred to by $\mu$ whereas the mean of the data we measured is referred to as $\bar{x}$.  The greek version is the *idealized* value for the parameter, something that we are striving to find the real estimate of.  However, as a Frequentist, we can never actually get to that parameter (remember the actual population of data is infinite but we can only sample a small amount of it) and when we talk about the data associated with what we collect, we refer to it as a estimate and use normal variable names.
+In statistics, we have two kinds of entities, parameters and estimates, which are dualities of each other.  The `TRUE` mean of a set of data is referred to by $\mu$ whereas the mean of the data we measured is referred to as $\bar{x}$.  The greek version is the *idealized* value for the parameter, something that we are striving to find the real estimate of.  However, as a Frequentist, we can never actually get to that parameter (remember the actual population of data is infinite but we can only sample a small amount of it) and when we talk about the data associated with what we collect, we refer to it as an estimate and use normal variable names.
 
 
 ## Parametric Assumptions
 
-For much of the statistics we use, there are underlying assumptions about the form of the data that we shold look at.
+For much of the statistics we use, there are underlying assumptions about the form of the data that we should look at.
 
 ### Testing for Normality.
 
@@ -117,9 +117,11 @@ For much of the statistics we use, there are underlying assumptions about the fo
 
 The normal distribution function is defined as:
 
+<mark>
 $$
 f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
 $$
+</mark>
 
 where $\mu$ and $\sigma$ are the true value of the underlying mean and standard deviation.  This distribution is denoted as $N(\mu,\sigma)$ and the differences in the mean value ($\mu$) and the variation measured by the standard deviation ($\sigma$) are shown below for $N(0,1)$, $N(0,5)$, and $N(10,1)$.
 
@@ -149,7 +151,7 @@ $$
 W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
 $$
 
-where $N$ is the number of samples, $a_i$ is a standardizing coeeficient, $x_i$ is the $i^{th}$ value of $x$, $\bar{x}$ is the mean of the observed values, and $R_{x_i}$ is the rank of the $x_i^{th}$ observation.
+where $N$ is the number of samples, $a_i$ is a standardizing coefficient, $x_i$ is the $i^{th}$ value of $x$, $\bar{x}$ is the mean of the observed values, and $R_{x_i}$ is the rank of the $x_i^{th}$ observation.
 
 ```{r}
 shapiro.test( beer$ABV_Min )
@@ -160,7 +162,7 @@ Rejection of the null hypothesis (e.g., a small `p-value` from the test) indicat
 
 ### Transformations
 
-If the data are not normal, we can look towards trying to see if we can transform it to a normally distributed variable.  There are a lot of 
+If the data are not normal, we can look towards trying to see if we can transform it to a normally distributed variable.  <mark>There are a lot of</mark>
 
 
 
@@ -171,7 +173,7 @@ x <- beer$ABV_Min
 x.std <- (x - mean(x)) / sd( x )
 ```
 
-There are times when this can be a nice way to compare the 
+<mark>There are times when this can be a nice way to compare the</mark>
 
 
 
@@ -183,7 +185,7 @@ $$
 
 **As long as $\lambda \ne 0$ (else we would be dividing by zero, which is not a good thing)!**  
 
-One way to use this transformation is to look at a range of values for $\lambda$ and determine if the transformation 
+<mark>One way to use this transformation is to look at a range of values for $\lambda$ and determine if the transformation</mark>
 
 
 ```{r}
@@ -220,7 +222,7 @@ vals[ which(vals$P == max( vals$P)),]
 
 with $\lambda = 0.115$ and a $P = 0.044$.
 
-*Arc-Sine Square Root*  When dealing with fractions, it is common that they do not behave very well when they are very close to 0.0 or 1.0.  One of the common transformations to use with these kinds of data is the arc-sin square root transformation.  For us, the ABV columns in the data is a percentage (but listed in numerical form as percent not as fraction).  So to transform it we can do the following.
+*Arc-Sine Square Root*  When dealing with fractions, it is common that they do not behave very well when they are very close to 0.0 or 1.0.  One of the common transformations to use with these kinds of data is the arc-sin square root transformation.  For us, the ABV columns in the data are percentages (but listed in numerical form as percent not as fraction).  So to transform it we can do the following.
 
 ```{r}
 abv <- beer$ABV_Min / 100.0
@@ -240,7 +242,7 @@ Another parametric assumption is the equality of variance across a range of the 
 The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent.  You need to think about this very carefully as you design your experiments.
 
 
-# Correlation Tests
+## Correlation Tests
 
 The following types of correlation statistics are a sample of the most common approaches.
 
@@ -252,13 +254,13 @@ $$
 \rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}
 $$
 
-The values of these data fall wihtin the range of: $-1 \le \rho \le +1$ with negative values indicating that when one variable goes up, the other goes down.  Positive values of a correlation indicate that both variable change systematically in the same direction (e.g., both up or both down).
+The values of these data fall within the range of: $-1 \le \rho \le +1$ with negative values indicating that when one variable goes up, the other goes down.  Positive values of a correlation indicate that both variable change systematically in the same direction (e.g., both up or both down).
 
 Here are some examples of the distribution of two variables and their associated correlation coefficient.
 
 ![*Figure 1: Data and associated correlation statistics.*](https://live.staticflickr.com/65535/50569436828_a110515a21_c_d.jpg)
 
-Significance testing for a correlation such as $\rho$ determine the extent to which we thing the value of is deviant from zero.  The Null Hypothesis is $H_O: \rho \ne 0$ and can be evaluated using the Student's t.test.  With large enough sample sizes, it can be approximated by: 
+<mark>Significance testing for a correlation such as $\rho$ determine the extent to which we thing the value of is deviant from zero.</mark>  The Null Hypothesis is $H_O: \rho \ne 0$ and can be evaluated using the Student's t.test.  With large enough sample sizes, it can be approximated by: 
 
 $$
 t = r \frac{N-2}{1-r^2}
@@ -281,7 +283,7 @@ names( OG.FG.pearson )
 
 ## Non-Parametric Test: Spearman's Rho
 
-Another way to de a correlation test that does not rely upon parametric assumptions is to use non-parametric approaches.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  One of the constraints for non-parametric statistics is that they are often evaluated for probability based upon permutations.
+Another way to do a correlation test that does not rely upon parametric assumptions is to use non-parametric approaches.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  One of the constraints for non-parametric statistics is that they are often evaluated for probability based upon permutations.
 
 The form of the estimator for this is almost identical to that of the Pearson statistic except that instead of the raw data, we are replacing values with the ranks of each value instead.  In doing so, there is a loss of the breadth of the raw data since we are just using ranks, and if the underlying data are poorly behaved because of outliers or other issues, this takes care of it.
 
@@ -300,9 +302,9 @@ OG.FG.spearman
 
 ## Permutation Testing for Significance
 
-In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we approximated using the $t$.  For the Spearman test with small numbers of samples, an approximation of the $t$ test is used, based upon counting ranks and the number of ways we can get different combinations of ranks.  For larger sample size tests using Spearman, an approximation using the $t$ test can be used.
+In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we approximated using the $t$.  <mark>For the Spearman test with small numbers of samples, an approximation of the $t$ test is used, based upon counting ranks and the number of ways we can get different combinations of ranks.  For larger sample size tests using Spearman, an approximation using the $t$ test can be used.</mark>
 
-Another way of doing this is based upon permutation and this approach can be applied to a wide array of questions.  For correlation's, if we consider the null hypothesis $H_O: \rho = 0$ we can make a few inferences.  If this hypothesis is true then we are, essentially, saying that the current relationship between $x_i$ and $y_i$ has no intrinsic relationship as there is no correlation.  This is, by default, what the null hypothesis says.  
+Another way of doing this is based upon permutation and this approach can be applied to a wide array of questions.  For correlations, if we consider the null hypothesis $H_O: \rho = 0$ we can make a few inferences.  If this hypothesis is true then we are, essentially, saying that the current relationship between $x_i$ and $y_i$ has no intrinsic relationship as there is no correlation.  This is, by default, what the null hypothesis says.  
 
 If that is true, however, that means that any permutation of one of the variables, say $y$, should produce a correlation statistic that is just as large as any other permutation of the data.  This is key.  
 

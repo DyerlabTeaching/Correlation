@@ -1,6 +1,6 @@
-# Correaltion Analyses
+# Correlation Analyses
 
-![Reserach buoy on the James River.](https://github.com/DyerlabTeaching/Correlation/raw/main/media/Buoy.jpeg)
+![Research buoy on the James River.](https://github.com/DyerlabTeaching/Correlation/raw/main/media/Buoy.jpeg)
 
 ## Impetus
 
