@@ -278,13 +278,13 @@ dbl (10): ABV_Min, ABV_Max, IBU_Min, IBU_Max, SRM_Min, SRM_Max, OG_Min, OG_M...
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( beer )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       Styles          Yeast        ABV_Min         ABV_Max      
- Length   :100   Length   :100   Min.   :2.400   Min.   : 3.200  
- N.unique :100   N.unique :  3   1st Qu.:4.200   1st Qu.: 5.475  
- N.blank  :  0   N.blank  :  0   Median :4.600   Median : 6.000  
- Min.nchar:  4   Min.nchar:  3   Mean   :4.947   Mean   : 6.768  
- Max.nchar: 27   Max.nchar:  6   3rd Qu.:5.500   3rd Qu.: 8.000  
-                                 Max.   :9.000   Max.   :14.000  
+<pre><code>    Styles             Yeast              ABV_Min         ABV_Max      
+ Length:100         Length:100         Min.   :2.400   Min.   : 3.200  
+ Class :character   Class :character   1st Qu.:4.200   1st Qu.: 5.475  
+ Mode  :character   Mode  :character   Median :4.600   Median : 6.000  
+                                       Mean   :4.947   Mean   : 6.768  
+                                       3rd Qu.:5.500   3rd Qu.: 8.000  
+                                       Max.   :9.000   Max.   :14.000  
     IBU_Min         IBU_Max          SRM_Min         SRM_Max     
  Min.   : 0.00   Min.   :  8.00   Min.   : 2.00   Min.   : 3.00  
  1st Qu.:15.00   1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00  
@@ -518,7 +518,7 @@ sample estimates:
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">method =</span> <span class="st">"spearman"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(beer$OG_Max, beer$FG_Max, method = "spearman"):
-cannot compute exact p-value with ties</code></pre>
+Cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>OG.FG.spearman</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -557,7 +557,7 @@ sample estimates:
                 Mean   :0.8374  
                 3rd Qu.:0.8374  
                 Max.   :0.8374  
-                NAs    :999     </code></pre>
+                NA's   :999     </code></pre>
 </div>
 </div>
 <p>Now, we can go through the 999 <code>NA</code> values we put into that data frame and:<br>
