@@ -31,6 +31,14 @@ Measures of correlation allow you to tell the extent to which two variables syst
 - An [in-class](https://dyerlabteaching.github.io/Correlation/in-class.html) activity.
 - A [video](https://youtu.be/mcjqdBwV8_U) recording of the lecture content (as I'll be out of town).
 
+## Assessment
+
+- A [homework](https://dyerlabteaching.github.io/Correlation/homework.html) assignment on the topic.
+
+## Logistics
+
+- A [Teaching Log](https://dyerlabteaching.github.io/Correlation/log.html) record of delivery and notes.
+
 ## Contact Information
 
 If you need to contact me, I am available at:
