@@ -4,29 +4,35 @@
 
 ## Impetus
 
-Measures of correlation allow you to tell the extent to which two variables systematically change, without assuming any functional relationships.  Depending upon the data, correlation analyses can be conducted by assuming parametric assumptions (such as normality of the raw data), as non-parametric approaches (based upon rankings), and via permutation analyses.
+Measures of correlation allow you to tell the extent to which two variables systematically change, without assuming any functional relationships. Depending upon the data, correlation analyses can be conducted by assuming parametric assumptions (such as normality of the raw data), as non-parametric approaches (based upon rankings), and via permutation analyses.
 
-## Student Learning Objectives
+## Module Learning Objectives
 
-At the end of this topic, you should be able to:   
+### Choose the Right Test for the Data
 
-- Understand the differences between parametric, non-parametric, and randomization methods for hypothesis testing.   
-- Test the normality of data using the Shapiro-Wilks test.  
-- Perform basic transformations on data to attempt to get your data more representative of normal data sets.  
-- Use the `cor.test()` function for parametric and non-parametric data.
+> Learners will distinguish between parametric, non-parametric, and randomization-based approaches to hypothesis testing, and assess data normality using the Shapiro-Wilk test to decide which approach applies.
+
+- **Bloom's Levels:** Understand (distinguish approaches), Apply (run normality tests)
+- **Reinforces:** Extends the hypothesis-testing framework from Analysis of Variance into a new context: deciding *which* test's assumptions actually fit the data.
+- **Notes:** Normality testing here functions as a diagnostic step, not an end in itself — it determines the rest of the workflow.
+
+### Quantify and Test Relationships Between Variables
+
+> Learners will apply data transformations where needed and use `cor.test()` to compute and test correlation coefficients under both parametric and non-parametric assumptions.
+
+- **Bloom's Levels:** Apply
+- **Reinforces:** Provides the first look at *association* between variables, setting up the transition to modeling relationships in Regression.
+- **Notes:** Transformations are framed as a practical fix, not a theoretical detour, when raw data fails normality checks.
 
 ## Content
 
-This topic has the following general content.
-
- - [Slides](https://dyerlabteaching.github.io/Correlation/slides.html) for the topic.
- - A larger [narrative](https://dyerlabteaching.github.io/Correlation/narrative.html) on correlation and permutation.
- - An [in-class](https://dyerlabteaching.github.io/Correlation/in-class.html) activity
- - A [video](https://youtu.be/mcjqdBwV8_U) recording of the lecture content (as I'll be out of town).
-
+- [Slides](https://dyerlabteaching.github.io/Correlation/slides.html) for the topic.
+- A larger [narrative](https://dyerlabteaching.github.io/Correlation/narrative.html) on correlation and permutation.
+- An [in-class](https://dyerlabteaching.github.io/Correlation/in-class.html) activity.
+- A [video](https://youtu.be/mcjqdBwV8_U) recording of the lecture content (as I'll be out of town).
 
 ## Contact Information
 
-If you need to contact me, I am available at:  
- - Email: rjdyer@vcu.edu
- - Twitter: [@dyerlab](https://twitter.com/dyerlab/)
+If you need to contact me, I am available at:
+- Email: [rjdyer@vcu.edu](mailto://rjdyer@vcu.edu)
+- Web: [rodneydyer.com](https://rodneydyer.com)
