@@ -1,9 +1,9 @@
 ---
 title: "Correlation"
-format: html
+format: dyerlab-narrative-html
 ---
 
-![](https://github.com/DyerlabTeaching/Correlation/blob/main/media/Buoy.jpeg?raw=true)
+![](https://dyerlabteaching.github.io/Correlation/media/Buoy.jpeg)
 
 ```{r setup, include=FALSE}
 library( tidyverse )
@@ -81,7 +81,7 @@ Now, do we think that because Nicolas Cage makes more movies people are dying at
 For this topic, I thought I would turn to a bit of a more digestible set of data—data describing beer styles! There is a new CSV data set on the GitHub site located at the following URL.
 
 ```{r}
-beer_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
+beer_url <- "https://dyerlabteaching.github.io/CourseData/Miscellaneous/Beer_Styles.csv"
 beer <- read_csv( beer_url )
 summary( beer )
 ```

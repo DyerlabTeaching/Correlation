@@ -2,7 +2,7 @@
 title: "Models of Correlation"
 subtitle: "Coincident change in pairs of variables"
 author: Rodney Dyer, PhD
-format: revealjs
+format: dyerlab-revealjs
 ---
 
 
@@ -176,7 +176,7 @@ The color of the beer is quantified using the Standard Reference Method (SRM) sc
 Here are the raw characteristic data for the different styles.
 
 ```{r}
-beer_url <- "https://raw.githubusercontent.com/dyerlab/ENVS-Lectures/master/data/Beer_Styles.csv"
+beer_url <- "https://dyerlabteaching.github.io/CourseData/Miscellaneous/Beer_Styles.csv"
 read_csv( beer_url ) |>
   mutate( Yeast = factor(Yeast) ) -> beer
 summary( beer )

@@ -1,6 +1,6 @@
 ---
 title: "In Class Activity - Correlation"
-format: html
+format: dyerlab-html
 ---
 
 ![](media/Buoy.jpeg)
