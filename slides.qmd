@@ -107,7 +107,7 @@ cor.test( df$`Nicolas Cage Movies`, df$`Drowning Deaths in Pools`)
 :::
 
 ::: {.column width="50%"}
-![](https://live.staticflickr.com/65535/50570218057_8a1887e597_w_d.jpg)
+![](media/flickr_50570218057.jpg)
 :::
 
 ::::
@@ -122,7 +122,7 @@ The [BJCP Style Guidelines](https://bjcp.org/stylecenter.php) exist for beer, me
 ## Basic Yeast Types
 
 
-![](https://live.staticflickr.com/65535/50569334528_f5152c320b_c_d.jpg)
+![](media/flickr_50569334528.jpg)
 
 &nbsp;
 
@@ -146,7 +146,7 @@ The difference between the gravities before and after fermentation can be used t
 
 &nbsp;
 
-![](https://live.staticflickr.com/65535/50570081896_82bacc922e_w_d.jpg)
+![](media/flickr_50570081896.jpg)
 :::
 
 ::::
@@ -159,7 +159,7 @@ The difference between the gravities before and after fermentation can be used t
 Bitterness is created by the addition of herbs.
 
 
-![](https://live.staticflickr.com/65535/50569334583_3f3bbae387_w_d.jpg)
+![](media/flickr_50569334583.jpg)
 
 
 
@@ -168,7 +168,7 @@ Bitterness is created by the addition of herbs.
 The color of the beer is quantified using the Standard Reference Method (SRM) scale.
 
 
-![](https://live.staticflickr.com/65535/50570214697_6a57066d3b_w_d.jpg)
+![](media/flickr_50570214697.jpg)
 
 
 ## The Data
@@ -399,7 +399,7 @@ The samples you collect, and the way that you design your experiments are most i
 :::
 
 ::: {.column width="50%"}
-![](https://live.staticflickr.com/65535/50582673933_4db6638924_w_d.jpg)
+![](media/flickr_50582673933.jpg)
 :::
 
 ::::
@@ -432,7 +432,7 @@ $t = r \frac{N-1}{1-r^2}$
 
 ## Visual Examples
 
-![*Figure 1: Data and associated correlation statistics.*](https://live.staticflickr.com/65535/50569436828_a110515a21_c_d.jpg)
+![*Figure 1: Data and associated correlation statistics.*](media/correlation_examples.jpg)
 
 
 
