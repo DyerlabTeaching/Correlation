@@ -3,7 +3,7 @@ title: "Correlation"
 format: dyerlab-narrative-html
 ---
 
-![](https://dyerlabteaching.github.io/Correlation/media/Buoy.jpeg)
+![](media/Buoy.jpeg)
 
 ```{r setup, include=FALSE}
 library( tidyverse )
@@ -258,7 +258,7 @@ The values of these data fall within the range of: $-1 \le \rho \le +1$ with neg
 
 Here are some examples of the distribution of two variables and their associated correlation coefficient.
 
-![*Figure 1: Data and associated correlation statistics.*](https://live.staticflickr.com/65535/50569436828_a110515a21_c_d.jpg)
+![*Figure 1: Data and associated correlation statistics.*](media/correlation_examples.jpg)
 
 <mark>Significance testing for a correlation such as $\rho$ determine the extent to which we thing the value of is deviant from zero.</mark>  The Null Hypothesis is $H_O: \rho \ne 0$ and can be evaluated using the Student's t.test.  With large enough sample sizes, it can be approximated by: 
 
