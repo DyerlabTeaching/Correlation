@@ -1,0 +1,11 @@
+title: "Correlation"
+repo: Correlation
+image:
+  file: media/module_image.jpg
+  alt: "An old field and fence in Virginia."
+epigraph: >-
+  Correlation is a test to see if two variables change in a coordinate
+  fashion.  However, this does not imply they are functionally linked or
+  causal in nature.
+resources:
+  - "A [video](https://youtu.be/mcjqdBwV8_U) recording of the lecture content (as I'll be out of town)."

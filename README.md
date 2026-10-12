@@ -1,6 +1,10 @@
-# Correlation Analyses
+# Correlation
 
-![Research buoy on the James River.](https://dyerlabteaching.github.io/Correlation/media/Buoy.jpeg)
+<!-- BEGIN module:header — generated from module.yml; edit that, not this -->
+
+![An old field and fence in Virginia.](https://dyerlabteaching.github.io/Correlation/media/module_image.jpg)
+
+<!-- END module:header -->
 
 ## Impetus
 
@@ -26,10 +30,14 @@ Measures of correlation allow you to tell the extent to which two variables syst
 
 ## Content
 
-- [Slides](https://dyerlabteaching.github.io/Correlation/slides.html) for the topic.
-- A larger [narrative](https://dyerlabteaching.github.io/Correlation/narrative.html) on correlation and permutation.
+<!-- BEGIN module:resources — generated from module.yml; edit that, not this -->
+
+- The [slides](https://dyerlabteaching.github.io/Correlation/slides.html) for this topic.
+- A longer [narrative](https://dyerlabteaching.github.io/Correlation/narrative.html) that goes into more depth.
 - An [in-class](https://dyerlabteaching.github.io/Correlation/in-class.html) activity.
 - A [video](https://youtu.be/mcjqdBwV8_U) recording of the lecture content (as I'll be out of town).
+
+<!-- END module:resources -->
 
 ## Assessment
 
