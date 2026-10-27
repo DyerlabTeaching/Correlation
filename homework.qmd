@@ -7,9 +7,16 @@ format: dyerlab-html
 
 ## The Idea
 
-A correlation statistic is only as good as the assumptions behind it. Pearson's product-moment correlation assumes each variable is (at least roughly) normally distributed; Spearman's rank correlation does not. So a reproducible analysis does not just run `cor.test()`, it **tests the assumption first, lets that result choose the method, and reports both** — the normality test and the correlation — with every number read from a variable in memory using an inline `` `r ` `` expression, never typed by hand.[^ref-normal]
+A correlation statistic is only as good as the assumptions behind it. Pearson's product-moment correlation assumes each variable is (at least roughly) normally distributed; Spearman's rank correlation does not. So a reproducible analysis does not just run `cor.test()`. It works down a short decision path and lets the data make each choice:[^ref-normal]
 
-[^ref-normal]: Normality testing with `qqnorm()` and `shapiro.test()` is covered in the narrative section [Testing for Normality](https://dyerlabteaching.github.io/Correlation/narrative.html#testing-for-normality.), and the two correlation methods in [Pearson](https://dyerlabteaching.github.io/Correlation/narrative.html#parametric-test-pearson-product-moment-correlations) and [Spearman](https://dyerlabteaching.github.io/Correlation/narrative.html#non-parametric-test-spearmans-rho).
+1. **Test normality.** If both variables are normal, use Pearson's correlation.
+2. **If not, try to transform.** If a transformation makes both variables normal, use Pearson's correlation on the transformed values.
+3. **If no transformation works, use ranks.** Spearman's $\rho$ makes no normality assumption.
+4. **If the *P*-value is only an approximation, permute.** Tied ranks keep `R` from computing an exact *P*-value for Spearman's test; a permutation test estimates it directly from the data.
+
+The write-up then reports every step it took, with every number read from a variable in memory using an inline `` `r ` `` expression, never typed by hand.
+
+[^ref-normal]: Normality testing with `qqnorm()` and `shapiro.test()` is covered in the narrative section [Testing for Normality](https://dyerlabteaching.github.io/Correlation/narrative.html#testing-for-normality.), transformations in [Transformations](https://dyerlabteaching.github.io/Correlation/narrative.html#transformations), the two correlation methods in [Pearson](https://dyerlabteaching.github.io/Correlation/narrative.html#parametric-test-pearson-product-moment-correlations) and [Spearman](https://dyerlabteaching.github.io/Correlation/narrative.html#non-parametric-test-spearmans-rho), and permutation in [Permutation Testing for Significance](https://dyerlabteaching.github.io/Correlation/narrative.html#permutation-testing-for-significance).
 
 This assignment has you practice that habit on the beer styles data from the module. Read the worked example, then reproduce its structure for beer color and final gravity.
 
@@ -28,7 +35,7 @@ abv <- beer$ABV_Max
 ibu <- beer$IBU_Max
 ```
 
-> **Analysis.** We first evaluated whether each variable could be considered normally distributed, visually with a normal quantile plot and formally with a Shapiro-Wilk test.
+> **Normality.** We first evaluated whether each variable could be considered normally distributed, visually with a normal quantile plot and formally with a Shapiro-Wilk test.
 
 ```{r}
 qqnorm( abv )
@@ -41,24 +48,56 @@ norm_abv
 norm_ibu
 ```
 
-> Because neither variable was normally distributed, we estimated their association with Spearman's rank correlation, $\rho$, which does not assume normality, using `cor.test()` with `method = "spearman"`.
+> **Transformation.** Because neither variable was normally distributed, we log-transformed both and tested them again.
+
+```{r}
+log_abv <- log( abv )
+log_ibu <- log( ibu )
+norm_log_abv <- shapiro.test( log_abv )
+norm_log_ibu <- shapiro.test( log_ibu )
+norm_log_abv
+norm_log_ibu
+```
+
+The log transformation was enough for IBU but not for ABV. Pearson's correlation needs *both* variables to be normal, so a transformation that fixes only one of them does not get us there.
+
+> **Correlation.** Because no transformation made both variables normal, we estimated their association on the original scale with Spearman's rank correlation, $\rho$, which does not assume normality, using `cor.test()` with `method = "spearman"`.
 
 ```{r}
 fit <- cor.test( abv, ibu, method = "spearman" )
 fit
 ```
 
-Spearman's test works on ranks, and several styles share the same maximum ABV or IBU. Those tied ranks are why `R` warns that it "cannot compute exact p-value with ties" and uses an approximation instead. The warning is expected here and is not an error.
+Spearman's test works on ranks, and several styles share the same maximum ABV or IBU. Those tied ranks are why `R` warns that it "cannot compute exact p-value with ties" and uses an approximation instead. The warning is expected and is not an error, but it does mean the *P*-value above is an estimate, so we check it with a permutation test.
+
+> **Permutation.** To get a *P*-value that does not depend on that approximation, we shuffled the IBU values 999 times, recomputed Spearman's $\rho$ for each shuffle, and counted how often a shuffled correlation was at least as large (in absolute value) as the observed one. The observed value counts as one of the 1,000.
+
+```{r}
+set.seed( 543 )
+rho_perm <- numeric( 999 )
+for( i in 1:999 ) {
+  rho_perm[i] <- cor( abv, sample( ibu ), method = "spearman" )
+}
+hist( rho_perm, xlim = c( -1, 1 ), main = "Permuted Spearman correlations" )
+abline( v = fit$estimate, col = "red" )
+P_perm <- ( sum( abs( rho_perm ) >= abs( fit$estimate ) ) + 1 ) / 1000
+P_perm
+```
+
+The red line is the observed correlation, far outside every shuffled value, so the permutation *P*-value is as small as 999 shuffles can measure: 1/1000.
 
 ### Preparing the reporting values
 
-Before writing a word of the Results, pull the numbers you are going to report out of the three test objects and format them. Doing that work in one small chunk, and giving each value a short name, keeps `format()` calls out of the prose. Notice that `norm_abv`, `norm_ibu`, and `fit` are all the same kind of object, so they share the same parts: `$statistic`, `$p.value`, and (for the correlation) `$estimate`.
+Before writing a word of the Results, pull the numbers you are going to report out of the test objects and format them. Doing that work in one small chunk, and giving each value a short name, keeps `format()` calls out of the prose. Notice that `norm_abv`, `norm_log_abv`, and `fit` are all the same kind of object, so they share the same parts: `$statistic`, `$p.value`, and (for the correlation) `$estimate`.
 
 ```{r}
 W_abv <- format( norm_abv$statistic, digits = 3 )
 P_abv <- format( norm_abv$p.value,   digits = 3 )
 W_ibu <- format( norm_ibu$statistic, digits = 3 )
 P_ibu <- format( norm_ibu$p.value,   digits = 3 )
+
+P_log_abv <- format( norm_log_abv$p.value, digits = 3 )
+P_log_ibu <- format( norm_log_ibu$p.value, digits = 3 )
 
 rho <- format( fit$estimate, digits = 3 )
 P   <- format( fit$p.value,  digits = 3 )
@@ -67,26 +106,28 @@ N   <- length( abv )
 
 ### Results
 
-> Neither maximum ABV (Shapiro-Wilk *W* = `r W_abv`, *P* = `r P_abv`) nor maximum IBU (*W* = `r W_ibu`, *P* = `r P_ibu`) was normally distributed across the `r N` beer styles. Using a rank-based test, maximum ABV and maximum IBU were moderately and positively correlated (Spearman's $\rho$ = `r rho`, *P* = `r P`): stronger styles tend to be allowed more bitterness.
+> Neither maximum ABV (Shapiro-Wilk *W* = `r W_abv`, *P* = `r P_abv`) nor maximum IBU (*W* = `r W_ibu`, *P* = `r P_ibu`) was normally distributed across the `r N` beer styles. A log transformation normalized IBU (*P* = `r P_log_ibu`) but not ABV (*P* = `r P_log_abv`). Using a rank-based test on the original values, maximum ABV and maximum IBU were moderately and positively correlated (Spearman's $\rho$ = `r rho`, approximate *P* = `r P`), and a permutation test confirmed it (*P* = `r P_perm`, 999 permutations): stronger styles tend to be allowed more bitterness.
 
 Here is the raw text that produced it:
 
 ```{verbatim}
-Neither maximum ABV (Shapiro-Wilk *W* = `r W_abv`, *P* = `r P_abv`) nor maximum IBU (*W* = `r W_ibu`, *P* = `r P_ibu`) was normally distributed across the `r N` beer styles. Using a rank-based test, maximum ABV and maximum IBU were moderately and positively correlated (Spearman's $\rho$ = `r rho`, *P* = `r P`): stronger styles tend to be allowed more bitterness.
+Neither maximum ABV (Shapiro-Wilk *W* = `r W_abv`, *P* = `r P_abv`) nor maximum IBU (*W* = `r W_ibu`, *P* = `r P_ibu`) was normally distributed across the `r N` beer styles. A log transformation normalized IBU (*P* = `r P_log_ibu`) but not ABV (*P* = `r P_log_abv`). Using a rank-based test on the original values, maximum ABV and maximum IBU were moderately and positively correlated (Spearman's $\rho$ = `r rho`, approximate *P* = `r P`), and a permutation test confirmed it (*P* = `r P_perm`, 999 permutations): stronger styles tend to be allowed more bitterness.
 ```
 
 ## Your Assignment
 
-Following the worked example, produce a standalone **Methods** and **Results** write-up for the correlation between **maximum color (`SRM_Max`) and maximum final gravity (`FG_Max`)** across all 100 beer styles.
+Following the worked example, produce a standalone **Methods** and **Results** write-up for the correlation between **maximum color (`SRM_Max`) and maximum final gravity (`FG_Max`)** across all 100 beer styles. Work down the same decision path, and let your results make each choice. Do not just copy the worked example's.
 
 Your document should have:
 
-1. **Methods**:
-   - a *Data* paragraph, followed by the chunk that loads the beer data and pulls out the two vectors;
-   - an *Analysis* paragraph on normality, followed by the chunk with a `qqnorm()` plot and a `shapiro.test()` for each variable;
-   - a sentence saying which correlation method you chose and why, followed by the chunk that runs `cor.test()`. Let your normality results make the choice. Do not just copy the worked example's.
-2. **A reporting-values chunk**: `format()` the two *W* statistics and their *P*-values, plus the correlation estimate and its *P*-value, and give each a short name.
-3. **Results**: one paragraph reporting those numbers as bare inline values (`` `r rho` ``), with no `format()` in the prose.
+1. **Methods**, each step a short paragraph followed by its chunk:
+   - *Data*: load the beer data and pull out the two vectors;
+   - *Normality*: a `qqnorm()` plot and a `shapiro.test()` for each variable;
+   - *Transformation* (if needed): transform the variables that are not normal and test them again. Try at least one transformation from the narrative and say whether it worked;
+   - *Correlation*: say which method you chose and why, then run `cor.test()`;
+   - *Permutation* (if needed): if `R` could only approximate your *P*-value, estimate it with 999 permutations.
+2. **A reporting-values chunk**: `format()` the numbers your Results report and give each a short name.
+3. **Results**: one paragraph reporting every step you took, with each number as a bare inline value (`` `r rho` ``) and no `format()` in the prose.
 
 Then answer briefly, a sentence or two each:
 

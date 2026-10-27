@@ -407,7 +407,7 @@ sample estimates:
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><span class="math display">\[
-f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
 \]</span></p>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -510,11 +510,37 @@ W = 0.96746, p-value = 0.01418</code></pre>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<section id="still-not-normal" class="slide level2">
+<h2>Still Not Normal?</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>vals[ <span class="fu">which</span>( vals<span class="sc">$</span>P <span class="sc">==</span> <span class="fu">max</span>( vals<span class="sc">$</span>P ) ), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Lambda        W          P
+82  0.115 0.973805 0.04351988</code></pre>
+</div>
+</div>
+<p>The best Box-Cox <span class="math inline">\(\lambda\)</span> still gives <span class="math inline">\(P &lt; 0.05\)</span>, and so did the arcsine square root.</p>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Real data often cannot be transformed to normality. When that happens, stop forcing the data to fit the parametric assumptions and use a method that does not need them.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="equality-of-variance" class="slide level2">
 <h2>Equality of Variance</h2>
 <p>It is assumed that the variance of the data are</p>
 
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="independence-of-data" class="slide level2">
 <h2>Independence of Data</h2>
 <div class="columns">
@@ -529,6 +555,20 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <h1>Correlation Models</h1>
 
 </section>
+<section id="choosing-a-correlation" class="slide level2">
+<h2>Choosing a Correlation</h2>
+<p>Let the data make each choice:</p>
+<ol type="1">
+<li><strong>Test normality.</strong> Both normal <span class="math inline">\(\to\)</span> Pearson.</li>
+<li><strong>If not, transform.</strong> Both normal after transforming <span class="math inline">\(\to\)</span> Pearson on the transformed values.</li>
+<li><strong>If no transformation works, use ranks</strong> <span class="math inline">\(\to\)</span> Spearman.</li>
+<li><strong>If the <em>P</em>-value is only an approximation, permute.</strong></li>
+</ol>
+<p>&nbsp;</p>
+<div class="fragment">
+<p>Then report <em>every</em> step you took, not just the final test.</p>
+</div>
+</section>
 <section id="parametric-correlation" class="slide level2 smaller">
 <h2>Parametric Correlation</h2>
 <h3 id="the-pearson-product-moment-correlation">The Pearson Product Moment Correlation</h3>
@@ -538,20 +578,40 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <p>whose values are confined to be within the range <span class="math inline">\(-1.0 \le \rho \le +1.0\)</span></p>
 <p>&nbsp;</p>
 <div class="fragment">
-<p>Whose significance is tested by using a variant of the <code>t.test</code>:</p>
-<p><span class="math inline">\(t = r \frac{N-1}{1-r^2}\)</span></p>
+<p>With <span class="math inline">\(H_O: \rho = 0\)</span>, whose significance (for normal data) is tested by a <span class="math inline">\(t\)</span> with <span class="math inline">\(N-2\)</span> degrees of freedom:</p>
+<p><span class="math inline">\(t = r \sqrt{\frac{N-2}{1-r^2}}\)</span></p>
 </div>
 </section>
 <section id="visual-examples" class="slide level2">
 <h2>Visual Examples</h2>
 
 <img data-src="media/correlation_examples.jpg" class="r-stretch quarto-figure-center"><p class="caption"><em>Figure 1: Data and associated correlation statistics.</em></p></section>
+<section id="do-og-fg-qualify-for-pearson" class="slide level2">
+<h2>Do OG &amp; FG Qualify for Pearson?</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">shapiro.test</span>( beer<span class="sc">$</span>OG_Max )<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.923811e-07</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">shapiro.test</span>( beer<span class="sc">$</span>FG_Max )<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.26812e-07</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">shapiro.test</span>( <span class="fu">log</span>( beer<span class="sc">$</span>FG_Max ) )<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.662322e-07</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>No.&nbsp;Gravities all sit just above 1.0, so a log barely changes them. We run Pearson anyway, <strong>only</strong> to see how <code>cor.test()</code> works.</p>
+</div>
+</section>
 <section id="the-correlation-test-1" class="slide level2">
 <h2>The Correlation Test</h2>
 <p>As we’ve used several times so far, the <code>cor.test()</code> function performs simple correlation analysis, with a deafult Pearson Product Moment analysis.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">cor.test</span>( beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max ) <span class="ot">-&gt;</span> OG.FG.pearson</span>
-<span id="cb12-2"><a href=""></a> OG.FG.pearson</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">cor.test</span>( beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max ) <span class="ot">-&gt;</span> OG.FG.pearson</span>
+<span id="cb20-2"><a href=""></a> OG.FG.pearson</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -571,7 +631,7 @@ sample estimates:
 <h2>The Correlation Test</h2>
 <p>Again, the object that is returned is a <code>list</code> and has these components.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">names</span>( OG.FG.pearson )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">names</span>( OG.FG.pearson )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
 [6] "alternative" "method"      "data.name"   "conf.int"   </code></pre>
@@ -586,9 +646,9 @@ sample estimates:
 <section id="non-parametric-correlation---spearmans-rho-1" class="slide level2">
 <h2>Non-Parametric Correlation - Spearman’s Rho</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>OG.FG.spearman <span class="ot">&lt;-</span> <span class="fu">cor.test</span>( beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max, </span>
-<span id="cb16-2"><a href=""></a>                            <span class="at">method =</span> <span class="st">"spearman"</span> )</span>
-<span id="cb16-3"><a href=""></a>OG.FG.spearman</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>OG.FG.spearman <span class="ot">&lt;-</span> <span class="fu">cor.test</span>( beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max, </span>
+<span id="cb24-2"><a href=""></a>                            <span class="at">method =</span> <span class="st">"spearman"</span> )</span>
+<span id="cb24-3"><a href=""></a>OG.FG.spearman</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Spearman's rank correlation rho
@@ -611,38 +671,53 @@ sample estimates:
 <p><strong>Important</strong></p>
 </div>
 <div class="callout-content">
-<p>Compare P-Values to Pearson Product Momement.</p>
+<p>Compare <span class="math inline">\(\rho\)</span> and the P-value to the Pearson Product Moment. Since OG &amp; FG are not normal, this is the one to report.</p>
 </div>
 </div>
 </div>
 </div>
 </section>
+<section id="ties-to-an-approximate-p-value" class="slide level2">
+<h2>Ties <span class="math inline">\(\to\)</span> An Approximate P-Value</h2>
+<p>&nbsp;</p>
+<blockquote>
+<p><code>Cannot compute exact p-value with ties</code></p>
+</blockquote>
+<p>&nbsp;</p>
+<ul>
+<li><p>Many styles share the same maximum gravity, so their ranks are tied.</p></li>
+<li><p>With ties, <code>R</code> falls back on a <span class="math inline">\(t\)</span> approximation for the P-value.</p></li>
+<li><p>Not an error, but it puts us at step 4: permute.</p></li>
+</ul>
+</section>
 <section id="permutation-for-significance." class="slide level2">
 <h2>Permutation for Significance.</h2>
-<p>Another way to circumvent some of the constraints based upon the form of the data, we can use permutation to test significance.</p>
+<p>Another way to circumvent some of the constraints based upon the form of the data, we can use permutation to test significance directly, without any distributional approximation.</p>
 <p><span class="math inline">\(H_O: \rho = 0\)</span></p>
+<p>&nbsp;</p>
+<p>Here we permute the Spearman <span class="math inline">\(\rho\)</span> whose P-value <code>R</code> could only approximate.</p>
 </section>
 <section id="setting-up-permutations" class="slide level2">
 <h2>Setting up Permutations</h2>
 <p>Permutation requires that we do some simple simulation work, permuting the data <strong>assuming</strong> the Null Hypothesis is <em>TRUE</em>.</p>
 <p>&nbsp;</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>x <span class="ot">&lt;-</span> beer<span class="sc">$</span>OG_Max</span>
-<span id="cb18-2"><a href=""></a>y <span class="ot">&lt;-</span> beer<span class="sc">$</span>FG_Max</span>
-<span id="cb18-3"><a href=""></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">Estimate =</span> <span class="fu">factor</span>( <span class="fu">c</span>( <span class="st">"Original"</span>,</span>
-<span id="cb18-4"><a href=""></a>                                        <span class="fu">rep</span>(<span class="st">"Permuted"</span>, <span class="dv">999</span>))), </span>
-<span id="cb18-5"><a href=""></a>                  <span class="at">rho =</span>  <span class="fu">c</span>( <span class="fu">cor.test</span>( x, y )<span class="sc">$</span>estimate,</span>
-<span id="cb18-6"><a href=""></a>                            <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">999</span>)) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>x <span class="ot">&lt;-</span> beer<span class="sc">$</span>OG_Max</span>
+<span id="cb26-2"><a href=""></a>y <span class="ot">&lt;-</span> beer<span class="sc">$</span>FG_Max</span>
+<span id="cb26-3"><a href=""></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">Estimate =</span> <span class="fu">factor</span>( <span class="fu">c</span>( <span class="st">"Original"</span>,</span>
+<span id="cb26-4"><a href=""></a>                                        <span class="fu">rep</span>(<span class="st">"Permuted"</span>, <span class="dv">999</span>))), </span>
+<span id="cb26-5"><a href=""></a>                  <span class="at">rho =</span>  <span class="fu">c</span>( OG.FG.spearman<span class="sc">$</span>estimate,</span>
+<span id="cb26-6"><a href=""></a>                            <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">999</span>)) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="setting-up-the-permutation" class="slide level2">
 <h2>Setting Up the Permutation</h2>
 <p>&nbsp;</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">head</span>( df )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">head</span>( df )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Estimate       rho
-1 Original 0.8374184
+1 Original 0.7644328
 2 Permuted        NA
 3 Permuted        NA
 4 Permuted        NA
@@ -668,7 +743,7 @@ sample estimates:
 </div>
 <div class="callout-content">
 <p><span class="math inline">\(H_O:\)</span> There is no correlation.</p>
-<p>If <span class="math inline">\(H_O\)</span> is correct then <em>every permuted value should be as large as the original one.</em></p>
+<p>If <span class="math inline">\(H_O\)</span> is correct then the original value should look like <em>just another</em> permuted value.</p>
 </div>
 </div>
 </div>
@@ -678,32 +753,46 @@ sample estimates:
 <h2>Permuting “Under the Null”</h2>
 <p>Shuffle the <code>y</code> variable and recalculate the test statistic 999 times.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
-<span id="cb21-2"><a href=""></a>  yhat <span class="ot">&lt;-</span> <span class="fu">sample</span>( y,   <span class="co"># this shuffles the data in y</span></span>
-<span id="cb21-3"><a href=""></a>                  <span class="at">size =</span> <span class="fu">length</span>(y), </span>
-<span id="cb21-4"><a href=""></a>                  <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb21-5"><a href=""></a>  model <span class="ot">&lt;-</span> <span class="fu">cor.test</span>( x, yhat )</span>
-<span id="cb21-6"><a href=""></a>  df<span class="sc">$</span>rho[i] <span class="ot">&lt;-</span> model<span class="sc">$</span>estimate </span>
-<span id="cb21-7"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">set.seed</span>( <span class="dv">543</span> )</span>
+<span id="cb29-2"><a href=""></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb29-3"><a href=""></a>  yhat <span class="ot">&lt;-</span> <span class="fu">sample</span>( y,   <span class="co"># this shuffles the data in y</span></span>
+<span id="cb29-4"><a href=""></a>                  <span class="at">size =</span> <span class="fu">length</span>(y), </span>
+<span id="cb29-5"><a href=""></a>                  <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb29-6"><a href=""></a>  df<span class="sc">$</span>rho[i] <span class="ot">&lt;-</span> <span class="fu">cor</span>( x, yhat, <span class="at">method =</span> <span class="st">"spearman"</span> )</span>
+<span id="cb29-7"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="visualizing-the-null" class="slide level2">
 <h2>Visualizing the NULL</h2>
 <p>Probability of a value as extreme or greater than the original estimate <span class="math inline">\(\to\)</span> P-value.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">ggplot</span>( df ) <span class="sc">+</span> </span>
-<span id="cb22-2"><a href=""></a>  <span class="fu">geom_histogram</span>( <span class="fu">aes</span>(rho, <span class="at">fill=</span>Estimate ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">ggplot</span>( df ) <span class="sc">+</span> </span>
+<span id="cb30-2"><a href=""></a>  <span class="fu">geom_histogram</span>( <span class="fu">aes</span>(rho, <span class="at">fill=</span>Estimate ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
+<section id="the-permutation-p-value" class="slide level2">
+<h2>The Permutation P-Value</h2>
+<p>The fraction of the 1,000 values (original included) at least as extreme as the original.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">sum</span>( <span class="fu">abs</span>( df<span class="sc">$</span>rho ) <span class="sc">&gt;=</span> <span class="fu">abs</span>( df<span class="sc">$</span>rho[<span class="dv">1</span>] ) ) <span class="sc">/</span> <span class="dv">1000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.001</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>The smallest P that 999 permutations can measure. It agrees with <code>cor.test()</code>: OG &amp; FG are positively correlated.</p>
+</div>
+</section>
 <section id="conclusions" class="slide level2">
 <h2>Conclusions</h2>
 <p>Measures of correlation determine the co-movement of two variables <strong>without</strong> making any statement regarding causation.</p>
 <ol type="1">
-<li>Parametric methods dependent upon normality.<br>
+<li>Test normality: normal data <span class="math inline">\(\to\)</span> Pearson.<br>
 </li>
-<li>Transformations are available.</li>
-<li>Non-Parametric &amp; Permutation approaches for more <em>difficult</em> data.</li>
+<li>Not normal? Try a transformation.</li>
+<li>Still not normal? Ranks <span class="math inline">\(\to\)</span> Spearman.</li>
+<li>Approximate P-value? Permute.</li>
 </ol>
 </section>
 <section id="questions" class="slide level2">

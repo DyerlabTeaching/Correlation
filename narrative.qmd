@@ -117,11 +117,9 @@ For much of the statistics we use, there are underlying assumptions about the fo
 
 The normal distribution function is defined as:
 
-<mark>
 $$
-f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
 $$
-</mark>
 
 where $\mu$ and $\sigma$ are the true value of the underlying mean and standard deviation.  This distribution is denoted as $N(\mu,\sigma)$ and the differences in the mean value ($\mu$) and the variation measured by the standard deviation ($\sigma$) are shown below for $N(0,1)$, $N(0,5)$, and $N(10,1)$.
 
@@ -157,22 +155,28 @@ where $N$ is the number of samples, $a_i$ is a standardizing coefficient, $x_i$ 
 shapiro.test( beer$ABV_Min )
 ```
 
-Rejection of the null hypothesis (e.g., a small `p-value` from the test) indicates that the data *are not* to be considered as coming from a normal distribution.  So, for the `ABV_Min` data above, it appears that it is not actually normally distributed.  So what do we do?
+Rejection of the null hypothesis (e.g., a small `p-value` from the test) indicates that the data *are not* to be considered as coming from a normal distribution.  So, for the `ABV_Min` data above, it appears that it is not actually normally distributed.  So what do we do?  We do not give up on the parametric approach right away; the next step is to see whether the data can be *transformed* into something that is normal.
 
 
 ### Transformations
 
-If the data are not normal, we can look towards trying to see if we can transform it to a normally distributed variable.  <mark>There are a lot of</mark>
+If the data are not normal, we can look towards trying to see if we can transform it to a normally distributed variable.  There are a lot of transformations to choose from, and which one helps depends upon how the data depart from normality (skewed to one side, bunched up against a boundary, etc.).  Here are three that come up often.
 
 
 *Studentized Data* - One way to standardize the data is to make it have a mean of 0.0 and a standard deviation of 1.0.  To do this, we subtract the `mean()` and divide by the `sd()`.
 
 ```{r}
-x <- beer$ABV_Min 
+x <- beer$ABV_Min
 x.std <- (x - mean(x)) / sd( x )
 ```
 
-<mark>There are times when this can be a nice way to compare the</mark>
+There are times when this can be a nice way to compare variables measured on very different scales (ABV in percent and IBU in bitterness units, for example) on a common axis.  However, it only shifts and rescales the data; the *shape* of the distribution is unchanged, so standardizing never makes non-normal data normal.
+
+```{r}
+shapiro.test( x.std )
+```
+
+The $W$ and $P$ are identical to those for the raw `ABV_Min` above.
 
 
 *Box Cox* - In 1964, Box & Cox defined a *family* of transformations known as the Box/Cox.  This family is defined by a single parameter, $\lambda$, whose value may vary depending upon the data.  The original data, $x$, is then transformed using the following relationship
@@ -181,9 +185,9 @@ $$
 \tilde{x} = \frac{x^\lambda - 1}{\lambda}
 $$
 
-**As long as $\lambda \ne 0$ (else we would be dividing by zero, which is not a good thing)!**  
+**As long as $\lambda \ne 0$ (else we would be dividing by zero, which is not a good thing)!**  At $\lambda = 0$ the family is defined as the natural log, $\tilde{x} = \log(x)$, which is why a log transformation is often the first one people try.
 
-<mark>One way to use this transformation is to look at a range of values for $\lambda$ and determine if the transformation</mark>
+One way to use this transformation is to look at a range of values for $\lambda$ and determine if the transformation, for any of them, produces data that pass a Shapiro-Wilk test.  The function below does just that, recording $W$ and $P$ for each $\lambda$.
 
 
 ```{r}
@@ -215,10 +219,11 @@ vals |>
 So if you look at this plot, it shows the P-value of the Shapiro-Wilkes test across a range of values.  Depending upon the level of rigor, this approaches the $\alpha = 0.05$ value closest at:
 
 ```{r}
-vals[ which(vals$P == max( vals$P)),]
+best <- vals[ which(vals$P == max( vals$P)),]
+best
 ```
 
-with $\lambda = 0.115$ and a $P = 0.044$.
+with $\lambda =$ `r format( best$Lambda, digits=3 )` and a $P =$ `r format( best$P, digits=2 )`.  That is close, but it is still below $\alpha = 0.05$, so even the best Box-Cox transformation does not give us normal data.
 
 *Arc-Sine Square Root*  When dealing with fractions, it is common that they do not behave very well when they are very close to 0.0 or 1.0.  One of the common transformations to use with these kinds of data is the arc-sin square root transformation.  For us, the ABV columns in the data are percentages (but listed in numerical form as percent not as fraction).  So to transform it we can do the following.
 
@@ -227,6 +232,8 @@ abv <- beer$ABV_Min / 100.0
 asin( sqrt( abv ) ) -> abv.1
 shapiro.test( abv.1)
 ```
+
+Again, not normal.  None of the transformations we tried makes `ABV_Min` normally distributed, and that happens a lot with real data.  When it does, we stop trying to force the data to fit the parametric assumptions and turn to a method that does not need them, which is where the correlation tests below are headed.
 
 
 ## Equal Variance
@@ -239,9 +246,16 @@ Another parametric assumption is the equality of variance across a range of the 
 The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent.  You need to think about this very carefully as you design your experiments.
 
 
-## Correlation Tests
+## Choosing a Correlation
 
-The following types of correlation statistics are a sample of the most common approaches.
+The assumptions above are not just background; they decide which correlation we are allowed to use.  For any pair of variables, we work down a short decision path and let the data make each choice:
+
+1. **Test normality.** If both variables are normal, use Pearson's product-moment correlation.
+2. **If not, try to transform.** If a transformation makes *both* variables normal, use Pearson's correlation on the transformed values.
+3. **If no transformation works, use ranks.** Spearman's $\rho$ makes no normality assumption.
+4. **If the *P*-value is only an approximation, permute.** A permutation test estimates the *P*-value directly from the data.
+
+Whatever path you take, report every step of it: the normality tests, any transformations you tried, the correlation you chose, and why.  The sections below cover each of the three correlation approaches, using the original and final gravity of the beer styles as a running example.
 
 ## Parametric Test: Pearson Product Moment Correlations
 
@@ -257,13 +271,24 @@ Here are some examples of the distribution of two variables and their associated
 
 ![*Figure 1: Data and associated correlation statistics.*](media/correlation_examples.jpg)
 
-<mark>Significance testing for a correlation such as $\rho$ determine the extent to which we thing the value of is deviant from zero.</mark>  The Null Hypothesis is $H_O: \rho \ne 0$ and can be evaluated using the Student's t.test.  With large enough sample sizes, it can be approximated by: 
+Significance testing for a correlation determines the extent to which we think the estimated value, $r$, deviates from zero.  The Null Hypothesis is $H_O: \rho = 0$ and, when both variables are normal, it can be evaluated with a Student's $t$ statistic with $N-2$ degrees of freedom:
 
 $$
-t = r \frac{N-2}{1-r^2}
+t = r \sqrt{\frac{N-2}{1-r^2}}
 $$
 
-However, we should probably rely upon `R` to look up the critical values of the statistic. 
+However, we should probably rely upon `R` to look up the critical values of the statistic.
+
+Following the decision path, before we use Pearson on the original and final gravities we check whether they are normal, and whether a log transformation helps.
+
+```{r}
+shapiro.test( beer$OG_Max )
+shapiro.test( beer$FG_Max )
+shapiro.test( log( beer$OG_Max ) )
+shapiro.test( log( beer$FG_Max ) )
+```
+
+They are not, and the log does essentially nothing: gravities all sit just above 1.0, a range so narrow that a log (or square root) barely changes the shape of the distribution.  So these data do **not** qualify for a Pearson correlation.  We run one anyway here, only to show how `cor.test()` works and what it returns; the next section gives the analysis these data actually call for.
 
 The default value for `cor.test()` is the Pearson.  Here is an example of its use and the output that we've seen before.
 
@@ -278,9 +303,11 @@ Of particular note are the components associated with the results object that al
 names( OG.FG.pearson )
 ```
 
+For example, `OG.FG.pearson$estimate` is the correlation, `r format( OG.FG.pearson$estimate, digits=3 )`, and `OG.FG.pearson$p.value` is its *P*-value.  Pulling values out of the result like this, rather than retyping them, is how you report them in your own write-ups.
+
 ## Non-Parametric Test: Spearman's Rho
 
-Another way to do a correlation test that does not rely upon parametric assumptions is to use non-parametric approaches.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  One of the constraints for non-parametric statistics is that they are often evaluated for probability based upon permutations.
+When the data are not normal and no transformation fixes them, as with the gravities above, we move to step 3 of the decision path: a correlation test that does not rely upon parametric assumptions.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  Ranks are always the integers $1$ to $N$, no matter how skewed or long-tailed the raw values are, so their distribution is never the problem.
 
 The form of the estimator for this is almost identical to that of the Pearson statistic except that instead of the raw data, we are replacing values with the ranks of each value instead.  In doing so, there is a loss of the breadth of the raw data since we are just using ranks, and if the underlying data are poorly behaved because of outliers or other issues, this takes care of it.
 
@@ -291,28 +318,32 @@ $$
 With the same data, it does provide potentially different estimates of the amount of correlation between the variables.
 
 ```{r}
-OG.FG.spearman <- cor.test( beer$OG_Max, beer$FG_Max, 
+OG.FG.spearman <- cor.test( beer$OG_Max, beer$FG_Max,
                             method = "spearman" )
 OG.FG.spearman
 ```
 
+Spearman's $\rho =$ `r format( OG.FG.spearman$estimate, digits=3 )` is noticeably smaller than the Pearson value of `r format( OG.FG.pearson$estimate, digits=3 )`.  Because the gravities are not normal, the Spearman value is the one to report.
+
+Notice the warning that `R` "cannot compute exact p-value with ties."  Many beer styles share the same maximum gravity, and those tied ranks mean the *P*-value above is an approximation.  That is not an error, but it does tell us we are at step 4 of the decision path.
+
 
 ## Permutation Testing for Significance
 
-In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we approximated using the $t$.  <mark>For the Spearman test with small numbers of samples, an approximation of the $t$ test is used, based upon counting ranks and the number of ways we can get different combinations of ranks.  For larger sample size tests using Spearman, an approximation using the $t$ test can be used.</mark>
+In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we used the $t$ distribution, which is only correct when the data are normal.  For Spearman, `R` computes an *exact* *P*-value when it can, by counting the number of ways the ranks could be arranged.  When there are ties in the data (or the sample is very large) it cannot, and it falls back on a $t$ approximation instead, which is what happened with the gravities above.
 
 Another way of doing this is based upon permutation and this approach can be applied to a wide array of questions.  For correlations, if we consider the null hypothesis $H_O: \rho = 0$ we can make a few inferences.  If this hypothesis is true then we are, essentially, saying that the current relationship between $x_i$ and $y_i$ has no intrinsic relationship as there is no correlation.  This is, by default, what the null hypothesis says.  
 
 If that is true, however, that means that any permutation of one of the variables, say $y$, should produce a correlation statistic that is just as large as any other permutation of the data.  This is key.  
 
-So, if we assume the $H_O$ is true then we should be able to shuffle one of the data and estimate a correlation statistic a large number of times.  We can then create a permuted distribution of values for the correlation, **Assuming the NULL Hypothesis is true.**  To this distribution, we can evaluate the magnitude of the original correlation.  Here is an example using the data from above.
+So, if we assume the $H_O$ is true then we should be able to shuffle one of the data and estimate a correlation statistic a large number of times.  We can then create a permuted distribution of values for the correlation, **Assuming the NULL Hypothesis is true.**  To this distribution, we can evaluate the magnitude of the original correlation.  Here is an example using the data from above, permuting the Spearman correlation whose *P*-value `R` could only approximate.
 
 ```{r}
 x <- beer$OG_Max
 y <- beer$FG_Max
 df <- data.frame( Estimate = factor( c( "Original",
-                                        rep("Permuted", 999))), 
-                  rho =  c( cor.test( x, y )$estimate,
+                                        rep("Permuted", 999))),
+                  rho =  c( OG.FG.spearman$estimate,
                             rep(NA, 999)) )
 
 summary( df )
@@ -325,14 +356,16 @@ Now, we can go through the 999 `NA` values we put into that data frame and:
 
 
 ```{r}
+set.seed( 543 )
 for( i in 2:1000) {
   yhat <- sample( y,   # this shuffles the data in y
-                  size = length(y), 
+                  size = length(y),
                   replace = FALSE)
-  model <- cor.test( x, yhat )
-  df$rho[i] <- model$estimate 
+  df$rho[i] <- cor( x, yhat, method = "spearman" )
 }
 ```
+
+Here we use `cor()` rather than `cor.test()` inside the loop.  We only need the estimate, not a test, and `cor.test()` would repeat the ties warning 999 times.  The `set.seed()` makes the shuffles the same every time the document is rendered.
 
 
 Now we can look at the distribution of permuted values and the original one and see the relationship.  If:  
@@ -346,6 +379,15 @@ ggplot( df ) +
   geom_histogram( aes(rho, fill=Estimate ) )
 ```
 
-If you look at the graph above, you see that the original value is **way bigger** than the values that would be found `if and only if` $H_O$ were true.  This suggests that the correlation is not zero and in fact it is the largest observation of the 1000 observations (a P estimate of $\frac{1}{1000}$...).
+If you look at the graph above, you see that the original value is **way bigger** than the values that would be found `if and only if` $H_O$ were true.  This suggests that the correlation is not zero.
+
+To turn that into a *P*-value, count how many of the 1,000 values (the original included) are at least as large as the original, in absolute value so that we test both directions, and divide by 1,000.
+
+```{r}
+P_perm <- sum( abs( df$rho ) >= abs( df$rho[1] ) ) / 1000
+P_perm
+```
+
+The original is the largest of the 1,000 values, so $P =$ `r P_perm`, the smallest *P* that 999 permutations can measure.  To resolve smaller *P*-values you would need more permutations.  Either way, the conclusion agrees with the approximate *P*-value from `cor.test()`: original and final gravity are significantly and positively correlated across beer styles.
 
 

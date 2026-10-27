@@ -251,7 +251,7 @@ In general, data we work with is assumed to follow a Normal distribution with pa
 
 ::: {.column width="50%"}
 $$
-f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})}
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
 $$
 :::
 
@@ -375,6 +375,22 @@ vals |> ggplot( aes(Lambda, P) ) + geom_line()
 ```
 
 
+## Still Not Normal?
+
+```{r}
+#| echo: true
+vals[ which( vals$P == max( vals$P ) ), ]
+```
+
+The best Box-Cox $\lambda$ still gives $P < 0.05$, and so did the arcsine square root.
+
+:::{.fragment}
+::: {.callout-important}
+Real data often cannot be transformed to normality. When that happens, stop forcing the data to fit the parametric assumptions and use a method that does not need them.
+:::
+:::
+
+
 
 
 ## Equality of Variance
@@ -409,6 +425,22 @@ The samples you collect, and the way that you design your experiments are most i
 # Correlation Models {background-color="black" background-image="media/contour.png" background-size="initial" background-position="right"}
 
 
+## Choosing a Correlation
+
+Let the data make each choice:
+
+1. **Test normality.** Both normal $\to$ Pearson.
+2. **If not, transform.** Both normal after transforming $\to$ Pearson on the transformed values.
+3. **If no transformation works, use ranks** $\to$ Spearman.
+4. **If the *P*-value is only an approximation, permute.**
+
+&nbsp;
+
+:::{.fragment}
+Then report *every* step you took, not just the final test.
+:::
+
+
 ## Parametric Correlation {.smaller}
 
 ### The Pearson Product Moment Correlation
@@ -424,9 +456,9 @@ whose values are confined to be within the range $-1.0 \le \rho \le +1.0$
 &nbsp;
 
 :::{.fragment}
-Whose significance is tested by using a variant of the `t.test`:
+With $H_O: \rho = 0$, whose significance (for normal data) is tested by a $t$ with $N-2$ degrees of freedom:
 
-$t = r \frac{N-1}{1-r^2}$
+$t = r \sqrt{\frac{N-2}{1-r^2}}$
 :::
 
 
@@ -436,6 +468,20 @@ $t = r \frac{N-1}{1-r^2}$
 
 
 
+
+
+## Do OG & FG Qualify for Pearson?
+
+```{r}
+#| echo: true
+shapiro.test( beer$OG_Max )$p.value
+shapiro.test( beer$FG_Max )$p.value
+shapiro.test( log( beer$FG_Max ) )$p.value
+```
+
+:::{.fragment}
+No. Gravities all sit just above 1.0, so a log barely changes them. We run Pearson anyway, **only** to see how `cor.test()` works.
+:::
 
 
 ## The Correlation Test 
@@ -480,17 +526,36 @@ OG.FG.spearman
 
 ::: {.fragment}
 ::: {.callout-important}
-Compare P-Values to Pearson Product Momement.
+Compare $\rho$ and the P-value to the Pearson Product Moment. Since OG & FG are not normal, this is the one to report.
 :::
 :::
+
+
+## Ties $\to$ An Approximate P-Value
+
+&nbsp;
+
+> `Cannot compute exact p-value with ties`
+
+&nbsp;
+
+- Many styles share the same maximum gravity, so their ranks are tied.
+
+- With ties, `R` falls back on a $t$ approximation for the P-value.
+
+- Not an error, but it puts us at step 4: permute.
 
 
 
 ## Permutation for Significance.
 
-Another way to circumvent some of the constraints based upon the form of the data, we can use permutation to test significance.
+Another way to circumvent some of the constraints based upon the form of the data, we can use permutation to test significance directly, without any distributional approximation.
 
 $H_O: \rho = 0$
+
+&nbsp;
+
+Here we permute the Spearman $\rho$ whose P-value `R` could only approximate.
 
 
 ## Setting up Permutations
@@ -505,7 +570,7 @@ x <- beer$OG_Max
 y <- beer$FG_Max
 df <- data.frame( Estimate = factor( c( "Original",
                                         rep("Permuted", 999))), 
-                  rho =  c( cor.test( x, y )$estimate,
+                  rho =  c( OG.FG.spearman$estimate,
                             rep(NA, 999)) )
 
 ```
@@ -533,7 +598,7 @@ Now, we can go through the 999 `NA` values we put into that data frame and:
 ::: {.callout-tip}
 $H_O:$ There is no correlation.
 
-If $H_O$ is correct then *every permuted value should be as large as the original one.*
+If $H_O$ is correct then the original value should look like *just another* permuted value.
 :::
 ::: 
 
@@ -544,12 +609,12 @@ Shuffle the `y` variable and recalculate the test statistic 999 times.
 
 ```{r}
 #| echo: true
+set.seed( 543 )
 for( i in 2:1000) {
   yhat <- sample( y,   # this shuffles the data in y
                   size = length(y), 
                   replace = FALSE)
-  model <- cor.test( x, yhat )
-  df$rho[i] <- model$estimate 
+  df$rho[i] <- cor( x, yhat, method = "spearman" )
 }
 ```
 
@@ -567,14 +632,29 @@ ggplot( df ) +
 ```
 
 
+## The Permutation P-Value
+
+The fraction of the 1,000 values (original included) at least as extreme as the original.
+
+```{r}
+#| echo: true
+sum( abs( df$rho ) >= abs( df$rho[1] ) ) / 1000
+```
+
+:::{.fragment}
+The smallest P that 999 permutations can measure. It agrees with `cor.test()`: OG & FG are positively correlated.
+:::
+
+
 
 ## Conclusions
 
 Measures of correlation determine the co-movement of two variables **without** making any statement regarding causation.
 
-1. Parametric methods dependent upon normality.  
-2. Transformations are available.
-3. Non-Parametric & Permutation approaches for more *difficult* data.
+1. Test normality: normal data $\to$ Pearson.  
+2. Not normal? Try a transformation.
+3. Still not normal? Ranks $\to$ Spearman.
+4. Approximate P-value? Permute.
 
 
 

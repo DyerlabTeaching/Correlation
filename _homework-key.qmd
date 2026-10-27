@@ -1,0 +1,105 @@
+---
+title: "Correlation Homework"
+author: "Answer Key"
+date: today
+abstract: |
+  Using the BJCP style guidelines for 100 beer styles, this document asks whether maximum
+  color (SRM) and maximum final gravity (FG) are associated. Because neither variable is
+  normally distributed, even after log and square-root transformations, the association is
+  estimated with Spearman's rank correlation and checked with a permutation test; darker styles
+  are allowed substantially higher final gravity.
+format: dyerlab-html
+---
+
+## Methods
+
+**Data.** We used the Beer Judge Certification Program style guidelines for 100 recognized beer styles, distributed through the course data repository. For each style the guidelines give a minimum and maximum value for alcohol content (ABV, % by volume), bitterness (IBU), color (SRM, Standard Reference Method), and original and final gravity (OG, FG). For this analysis we pulled the maximum color and the maximum final gravity for every style into a pair of vectors.
+
+```{r}
+#| message: false
+library( tidyverse )
+beer_url <- "https://dyerlabteaching.github.io/CourseData/Miscellaneous/Beer_Styles.csv"
+beer <- read_csv( beer_url )
+srm <- beer$SRM_Max
+fg <- beer$FG_Max
+```
+
+**Normality.** We first evaluated whether each variable could be considered normally distributed, visually with a normal quantile plot and formally with a Shapiro-Wilk test.
+
+```{r}
+qqnorm( srm, main = "Maximum color (SRM)" )
+qqline( srm, col = "red" )
+qqnorm( fg, main = "Maximum final gravity (FG)" )
+qqline( fg, col = "red" )
+norm_srm <- shapiro.test( srm )
+norm_fg <- shapiro.test( fg )
+norm_srm
+norm_fg
+```
+
+Both quantile plots bend away from the reference line, and both Shapiro-Wilk tests reject normality.
+
+**Transformation.** Because neither variable was normally distributed, we tried two transformations from the narrative, the log and the square root, on both variables and tested them again.
+
+```{r}
+norm_log_srm  <- shapiro.test( log( srm ) )
+norm_log_fg   <- shapiro.test( log( fg ) )
+norm_sqrt_srm <- shapiro.test( sqrt( srm ) )
+norm_sqrt_fg  <- shapiro.test( sqrt( fg ) )
+norm_log_srm
+norm_log_fg
+norm_sqrt_srm
+norm_sqrt_fg
+```
+
+Neither transformation normalized either variable. Final gravity barely responds at all: every value sits just above 1.0, a range so narrow that a log or square root changes the shape of the distribution almost not at all.
+
+**Correlation.** Because no transformation made the variables normal, we estimated their association on the original scale with Spearman's rank correlation, $\rho$, which does not assume normality, using `cor.test()` with `method = "spearman"`.
+
+```{r}
+#| warning: false
+fit <- cor.test( srm, fg, method = "spearman" )
+fit
+```
+
+**Permutation.** Several styles share the same maximum color or final gravity, so `R` could not compute an exact *P*-value from the tied ranks and reported an approximation. To estimate it directly, we shuffled the final gravity values 999 times, recomputed Spearman's $\rho$ for each shuffle, and counted how often a shuffled correlation was at least as large (in absolute value) as the observed one, counting the observed value as one of the 1,000.
+
+```{r}
+set.seed( 543 )
+rho_perm <- numeric( 999 )
+for( i in 1:999 ) {
+  rho_perm[i] <- cor( srm, sample( fg ), method = "spearman" )
+}
+hist( rho_perm, xlim = c( -1, 1 ), main = "Permuted Spearman correlations" )
+abline( v = fit$estimate, col = "red" )
+P_perm <- ( sum( abs( rho_perm ) >= abs( fit$estimate ) ) + 1 ) / 1000
+P_perm
+```
+
+### Reporting values
+
+```{r}
+W_srm <- format( norm_srm$statistic, digits = 3 )
+P_srm <- format( norm_srm$p.value,   digits = 3 )
+W_fg  <- format( norm_fg$statistic,  digits = 3 )
+P_fg  <- format( norm_fg$p.value,    digits = 3 )
+
+P_log_srm  <- format( norm_log_srm$p.value,  digits = 3 )
+P_log_fg   <- format( norm_log_fg$p.value,   digits = 3 )
+P_sqrt_srm <- format( norm_sqrt_srm$p.value, digits = 3 )
+P_sqrt_fg  <- format( norm_sqrt_fg$p.value,  digits = 3 )
+
+rho <- format( fit$estimate, digits = 3 )
+P   <- format( fit$p.value,  digits = 3 )
+N   <- length( srm )
+```
+
+## Results
+
+Neither maximum color (Shapiro-Wilk *W* = `r W_srm`, *P* = `r P_srm`) nor maximum final gravity (*W* = `r W_fg`, *P* = `r P_fg`) was normally distributed across the `r N` beer styles, and neither a log transformation (color *P* = `r P_log_srm`; final gravity *P* = `r P_log_fg`) nor a square-root transformation (*P* = `r P_sqrt_srm`; *P* = `r P_sqrt_fg`) corrected that. Using a rank-based test on the original values, maximum color and maximum final gravity were moderately and positively correlated (Spearman's $\rho$ = `r rho`, approximate *P* = `r P`), and a permutation test confirmed it (*P* = `r P_perm`, 999 permutations): darker styles tend to be allowed a higher final gravity.
+
+## Questions
+
+**Why do ranks free Spearman's $\rho$ from the normality assumption, and what is lost?** Ranks are always the integers 1 to *N* no matter how the raw values are distributed, so skew, a long tail, or an outlier cannot distort them; the statistic only asks whether the two orderings agree. The price is the size of the differences: a style twice as dark as its neighbor and one barely darker get ranks one apart, so Spearman measures whether the relationship is consistently increasing, not how much one variable changes per unit of the other.
+
+**Does this show that making a beer darker makes it sweeter and fuller-bodied?** No. A correlation shows that the two variables vary together across styles, not that one causes the other or which direction any influence runs. Here both are plausibly driven by a third factor, the caramel and roasted specialty malts used in styles like stouts and porters, which darken the beer and also add sugars the yeast cannot ferment. The data are also style *guidelines*, not measurements of beers in which color was changed experimentally, so nothing about manipulating one beer's color can be read from them.
