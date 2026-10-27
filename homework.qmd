@@ -1,26 +1,136 @@
 ---
 title: "Correlation Homework"
+subtitle: "Checking assumptions before choosing a correlation"
 author: "YOUR NAME HERE"
 format: dyerlab-html
 ---
 
-## Homework
+## The Idea
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+A correlation statistic is only as good as the assumptions behind it. Pearson's product-moment correlation assumes each variable is (at least roughly) normally distributed; Spearman's rank correlation does not. So a reproducible analysis does not just run `cor.test()`, it **tests the assumption first, lets that result choose the method, and reports both** — the normality test and the correlation — with every number read from a variable in memory using an inline `` `r ` `` expression, never typed by hand.[^ref-normal]
 
-## Running Code
+[^ref-normal]: Normality testing with `qqnorm()` and `shapiro.test()` is covered in the narrative section [Testing for Normality](https://dyerlabteaching.github.io/Correlation/narrative.html#testing-for-normality.), and the two correlation methods in [Pearson](https://dyerlabteaching.github.io/Correlation/narrative.html#parametric-test-pearson-product-moment-correlations) and [Spearman](https://dyerlabteaching.github.io/Correlation/narrative.html#non-parametric-test-spearmans-rho).
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+This assignment has you practice that habit on the beer styles data from the module. Read the worked example, then reproduce its structure for beer color and final gravity.
+
+## A Worked Example
+
+### Methods
+
+> **Data.** We used the Beer Judge Certification Program style guidelines for 100 recognized beer styles, distributed through the course data repository. For each style the guidelines give a minimum and maximum value for alcohol content (ABV, % by volume), bitterness (IBU), color (SRM), and original and final gravity (OG, FG). For this example we pulled the maximum ABV and the maximum IBU for every style into a pair of vectors.
 
 ```{r}
-1 + 1
+#| message: false
+library( tidyverse )
+beer_url <- "https://dyerlabteaching.github.io/CourseData/Miscellaneous/Beer_Styles.csv"
+beer <- read_csv( beer_url )
+abv <- beer$ABV_Max
+ibu <- beer$IBU_Max
 ```
 
-You can add options to executable code like this
+> **Analysis.** We first evaluated whether each variable could be considered normally distributed, visually with a normal quantile plot and formally with a Shapiro-Wilk test.
 
 ```{r}
-#| echo: false
-2 * 2
+qqnorm( abv )
+qqline( abv, col = "red" )
+qqnorm( ibu )
+qqline( ibu, col = "red" )
+norm_abv <- shapiro.test( abv )
+norm_ibu <- shapiro.test( ibu )
+norm_abv
+norm_ibu
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+> Because neither variable was normally distributed, we estimated their association with Spearman's rank correlation, $\rho$, which does not assume normality, using `cor.test()` with `method = "spearman"`.
+
+```{r}
+fit <- cor.test( abv, ibu, method = "spearman" )
+fit
+```
+
+Spearman's test works on ranks, and several styles share the same maximum ABV or IBU. Those tied ranks are why `R` warns that it "cannot compute exact p-value with ties" and uses an approximation instead. The warning is expected here and is not an error.
+
+### Preparing the reporting values
+
+Before writing a word of the Results, pull the numbers you are going to report out of the three test objects and format them. Doing that work in one small chunk, and giving each value a short name, keeps `format()` calls out of the prose. Notice that `norm_abv`, `norm_ibu`, and `fit` are all the same kind of object, so they share the same parts: `$statistic`, `$p.value`, and (for the correlation) `$estimate`.
+
+```{r}
+W_abv <- format( norm_abv$statistic, digits = 3 )
+P_abv <- format( norm_abv$p.value,   digits = 3 )
+W_ibu <- format( norm_ibu$statistic, digits = 3 )
+P_ibu <- format( norm_ibu$p.value,   digits = 3 )
+
+rho <- format( fit$estimate, digits = 3 )
+P   <- format( fit$p.value,  digits = 3 )
+N   <- length( abv )
+```
+
+### Results
+
+> Neither maximum ABV (Shapiro-Wilk *W* = `r W_abv`, *P* = `r P_abv`) nor maximum IBU (*W* = `r W_ibu`, *P* = `r P_ibu`) was normally distributed across the `r N` beer styles. Using a rank-based test, maximum ABV and maximum IBU were moderately and positively correlated (Spearman's $\rho$ = `r rho`, *P* = `r P`): stronger styles tend to be allowed more bitterness.
+
+Here is the raw text that produced it:
+
+```{verbatim}
+Neither maximum ABV (Shapiro-Wilk *W* = `r W_abv`, *P* = `r P_abv`) nor maximum IBU (*W* = `r W_ibu`, *P* = `r P_ibu`) was normally distributed across the `r N` beer styles. Using a rank-based test, maximum ABV and maximum IBU were moderately and positively correlated (Spearman's $\rho$ = `r rho`, *P* = `r P`): stronger styles tend to be allowed more bitterness.
+```
+
+## Your Assignment
+
+Following the worked example, produce a standalone **Methods** and **Results** write-up for the correlation between **maximum color (`SRM_Max`) and maximum final gravity (`FG_Max`)** across all 100 beer styles.
+
+Your document should have:
+
+1. **Methods**:
+   - a *Data* paragraph, followed by the chunk that loads the beer data and pulls out the two vectors;
+   - an *Analysis* paragraph on normality, followed by the chunk with a `qqnorm()` plot and a `shapiro.test()` for each variable;
+   - a sentence saying which correlation method you chose and why, followed by the chunk that runs `cor.test()`. Let your normality results make the choice. Do not just copy the worked example's.
+2. **A reporting-values chunk**: `format()` the two *W* statistics and their *P*-values, plus the correlation estimate and its *P*-value, and give each a short name.
+3. **Results**: one paragraph reporting those numbers as bare inline values (`` `r rho` ``), with no `format()` in the prose.
+
+Then answer briefly, a sentence or two each:
+
+- Spearman's $\rho$ is computed from the *ranks* of the data rather than the raw values. Why does that free it from the normality assumption, and what information about the data do you give up in exchange?
+- Darker beer styles tend to have higher final gravity. Does your result show that making a beer darker makes it sweeter and fuller-bodied? Explain what a correlation can and cannot tell you here.
+
+## What You Turn In
+
+**One file: the rendered, self-contained `.html`.** Not the `.qmd`, and not a copy of this page. Make a *new* Quarto document that contains only your own work: your Methods and Results sections with their chunks, the reporting-values chunk, and your brief answers to the two questions.
+
+The worked example above is a model to imitate, not text to paste into your document.
+
+### Making the document
+
+1. In RStudio: **File ▸ New File ▸ Quarto Document…**
+2. In the dialog, enter a title and your name, leave the engine set to **Knitr**, and click **Create**.
+3. Delete everything RStudio puts below the header (the "Quarto" boilerplate and its example chunk).
+4. Replace the header it generated with the one below.
+5. Save the file into your course project folder as `Correlation-Homework.qmd`.
+6. Write your content, then click **Render** to produce the `.html`. That HTML file is what you submit.
+
+### The full YAML header
+
+```yaml
+---
+title: "Correlation Homework"
+author: "Your Name"
+date: today
+abstract: |
+  A sentence or two saying what the document does: the data, the question, and what you found.
+format:
+  html:
+    self-contained: true
+    code-tools: true
+---
+```
+
+- **`title` / `author` / `date` / `abstract`**: complete front matter, including a short summary where a scientific paper would put its abstract. `date: today` fills itself in at render time.
+- **`format: html`**: render to a single web page I can open in any browser.
+- **`self-contained: true`**: bundle every image, style, and script *into* that one `.html` file. Without it the file depends on a sibling `*_files/` folder that never makes it into the upload, and your figures and formatting arrive broken.
+- **`code-tools: true`**: adds the "</> Code" button in the top-right that lets a reader view the full source. **This is not optional.** If I cannot see the code behind a wrong answer, I cannot tell whether you were one typo away or lost the plot entirely. That means I cannot give partial credit, point out where it went sideways, or help you fix it. A rendered page with no visible code is graded only on what rendered.
+
+Use this same header layout for every document you turn in this course.
+
+## How This Is Graded
+
+This assignment is scored with the **Online Homework Rubric** on the Canvas site, the same rubric used for every online homework in this course. It covers online access to the published document, front matter, formatting, and whether the document stands on its own; the remaining points come from the assignment-specific work above.
