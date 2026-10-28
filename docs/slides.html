@@ -225,15 +225,13 @@ Rodney Dyer, PhD
 <section id="example-data" class="slide level2 scrollable">
 <h2>Example Data</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">tibble</span>( <span class="at">Year =</span> <span class="dv">1999</span><span class="sc">:</span><span class="dv">2009</span>, </span>
-<span id="cb1-2"><a href=""></a>            <span class="st">`</span><span class="at">Nicolas Cage Movies</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>( <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, </span>
-<span id="cb1-3"><a href=""></a>                                       <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, </span>
-<span id="cb1-4"><a href=""></a>                                       <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>),</span>
-<span id="cb1-5"><a href=""></a>            <span class="st">`</span><span class="at">Drowning Deaths in Pools</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>( <span class="dv">109</span>, <span class="dv">102</span>, <span class="dv">102</span>, </span>
-<span id="cb1-6"><a href=""></a>                                            <span class="dv">98</span>, <span class="dv">85</span>, <span class="dv">95</span>, </span>
-<span id="cb1-7"><a href=""></a>                                            <span class="dv">96</span>, <span class="dv">98</span>, <span class="dv">123</span>, </span>
-<span id="cb1-8"><a href=""></a>                                            <span class="dv">94</span>, <span class="dv">102</span> )) <span class="ot">-&gt;</span> df</span>
-<span id="cb1-9"><a href=""></a><span class="fu">head</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">tibble</span>(</span>
+<span id="cb1-2"><a href=""></a>  <span class="at">Year =</span> <span class="dv">1999</span><span class="sc">:</span><span class="dv">2009</span>,</span>
+<span id="cb1-3"><a href=""></a>  <span class="st">`</span><span class="at">Nicolas Cage Movies</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>),</span>
+<span id="cb1-4"><a href=""></a>  <span class="st">`</span><span class="at">Drowning Deaths in Pools</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">109</span>, <span class="dv">102</span>, <span class="dv">102</span>, <span class="dv">98</span>, <span class="dv">85</span>, <span class="dv">95</span>, </span>
+<span id="cb1-5"><a href=""></a>                                  <span class="dv">96</span>, <span class="dv">98</span>, <span class="dv">123</span>, <span class="dv">94</span>, <span class="dv">102</span> )  </span>
+<span id="cb1-6"><a href=""></a>  ) <span class="ot">-&gt;</span> df</span>
+<span id="cb1-7"><a href=""></a><span class="fu">head</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
    Year `Nicolas Cage Movies` `Drowning Deaths in Pools`
@@ -334,27 +332,27 @@ sample estimates:
 <p>Here are the raw characteristic data for the different styles.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>       Styles       Yeast       ABV_Min         ABV_Max          IBU_Min     
- Length   :100   Ale   :69   Min.   :2.400   Min.   : 3.200   Min.   : 0.00  
- N.unique :100   Either: 4   1st Qu.:4.200   1st Qu.: 5.475   1st Qu.:15.00  
- N.blank  :  0   Lager :27   Median :4.600   Median : 6.000   Median :20.00  
- Min.nchar:  4               Mean   :4.947   Mean   : 6.768   Mean   :21.97  
- Max.nchar: 27               3rd Qu.:5.500   3rd Qu.: 8.000   3rd Qu.:25.00  
-                             Max.   :9.000   Max.   :14.000   Max.   :60.00  
-    IBU_Max          SRM_Min         SRM_Max          OG_Min     
- Min.   :  8.00   Min.   : 2.00   Min.   : 3.00   Min.   :1.026  
- 1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00   1st Qu.:1.040  
- Median : 35.00   Median : 8.00   Median :17.00   Median :1.046  
- Mean   : 38.98   Mean   : 9.82   Mean   :17.76   Mean   :1.049  
- 3rd Qu.: 45.00   3rd Qu.:14.00   3rd Qu.:22.00   3rd Qu.:1.056  
- Max.   :120.00   Max.   :30.00   Max.   :40.00   Max.   :1.080  
-     OG_Max          FG_Min          FG_Max     
- Min.   :1.032   Min.   :0.998   Min.   :1.006  
- 1st Qu.:1.052   1st Qu.:1.008   1st Qu.:1.012  
- Median :1.060   Median :1.010   Median :1.015  
- Mean   :1.065   Mean   :1.009   Mean   :1.016  
- 3rd Qu.:1.075   3rd Qu.:1.010   3rd Qu.:1.018  
- Max.   :1.130   Max.   :1.020   Max.   :1.040  </code></pre>
+<pre><code>    Styles             Yeast       ABV_Min         ABV_Max      
+ Length:100         Ale   :69   Min.   :2.400   Min.   : 3.200  
+ Class :character   Either: 4   1st Qu.:4.200   1st Qu.: 5.475  
+ Mode  :character   Lager :27   Median :4.600   Median : 6.000  
+                                Mean   :4.947   Mean   : 6.768  
+                                3rd Qu.:5.500   3rd Qu.: 8.000  
+                                Max.   :9.000   Max.   :14.000  
+    IBU_Min         IBU_Max          SRM_Min         SRM_Max     
+ Min.   : 0.00   Min.   :  8.00   Min.   : 2.00   Min.   : 3.00  
+ 1st Qu.:15.00   1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00  
+ Median :20.00   Median : 35.00   Median : 8.00   Median :17.00  
+ Mean   :21.97   Mean   : 38.98   Mean   : 9.82   Mean   :17.76  
+ 3rd Qu.:25.00   3rd Qu.: 45.00   3rd Qu.:14.00   3rd Qu.:22.00  
+ Max.   :60.00   Max.   :120.00   Max.   :30.00   Max.   :40.00  
+     OG_Min          OG_Max          FG_Min          FG_Max     
+ Min.   :1.026   Min.   :1.032   Min.   :0.998   Min.   :1.006  
+ 1st Qu.:1.040   1st Qu.:1.052   1st Qu.:1.008   1st Qu.:1.012  
+ Median :1.046   Median :1.060   Median :1.010   Median :1.015  
+ Mean   :1.049   Mean   :1.065   Mean   :1.009   Mean   :1.016  
+ 3rd Qu.:1.056   3rd Qu.:1.075   3rd Qu.:1.010   3rd Qu.:1.018  
+ Max.   :1.080   Max.   :1.130   Max.   :1.020   Max.   :1.040  </code></pre>
 </div>
 </div>
 </section>
@@ -425,24 +423,31 @@ f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\ri
 <h2>Visualizing Normality</h2>
 <p>Visualizing the ‘normality’ of the data using built-in functions.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">qqnorm</span>( beer<span class="sc">$</span>ABV_Min )</span>
-<span id="cb5-2"><a href=""></a><span class="fu">qqline</span>( beer<span class="sc">$</span>ABV_Min, <span class="at">col=</span><span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">qqnorm</span>(beer<span class="sc">$</span>ABV_Min)</span>
+<span id="cb5-2"><a href=""></a><span class="fu">qqline</span>(beer<span class="sc">$</span>ABV_Min, <span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
-<section id="testing-for-normality" class="slide level2">
+<section id="testing-for-normality" class="slide level2 smaller">
 <h2>Testing for Normality</h2>
-<p>The Shapiro-Wilk test for normality has the null hypothesis <span class="math inline">\(H_O: Data\;are\;normal\)</span>, using the <code>W</code> statistic.</p>
-<p>&nbsp;</p>
-<p><span class="math inline">\(W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}\)</span></p>
-<p>&nbsp;</p>
-<p>where <span class="math inline">\(N\)</span> is the number of samples, <span class="math inline">\(a_i\)</span> is a standardizing coeeficient, <span class="math inline">\(x_i\)</span> is the <span class="math inline">\(i^{th}\)</span> value of <span class="math inline">\(x\)</span>, <span class="math inline">\(\bar{x}\)</span> is the mean of the observed values, and <span class="math inline">\(R_{x_i}\)</span> is the rank of the <span class="math inline">\(x_i^{th}\)</span> observation.</p>
+<p>The Shapiro-Wilk test for normality has the null hypothesis</p>
+<p><span class="math inline">\(H_O: Data\;are\;normal\)</span></p>
+<p><span class="math display">\[
+W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
+\]</span> where:</p>
+<ul>
+<li><span class="math inline">\(N\)</span> is the number of samples,</li>
+<li><span class="math inline">\(a_i\)</span> is a standardizing coeeficient,</li>
+<li><span class="math inline">\(x_i\)</span> is the <span class="math inline">\(i^{th}\)</span> value of <span class="math inline">\(x\)</span>,</li>
+<li><span class="math inline">\(\bar{x}\)</span> is the mean of the observed values, and</li>
+<li><span class="math inline">\(R_{x_i}\)</span> is the rank of the <span class="math inline">\(x_i^{th}\)</span> observation.</li>
+</ul>
 </section>
 <section id="shapiro-wilkes-test" class="slide level2">
 <h2>Shapiro Wilkes Test</h2>
 <p>The default test for this in <code>R</code> is performed by the <code>shapiro.test()</code> function. Here, we will look at the minimum ABV value from the beer dataset.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">shapiro.test</span>( beer<span class="sc">$</span>ABV_Min )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">shapiro.test</span>(beer<span class="sc">$</span>ABV_Min)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -462,8 +467,8 @@ W = 0.94595, p-value = 0.0004532</code></pre>
 <p>Fractions and Percentages are known to behave poorly, particularly around the edges (e.g., close to 0 or 1). It is not uncommon to use a simple ArcSin Square Root transformation to try to help fractional data.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>abv <span class="ot">&lt;-</span> beer<span class="sc">$</span>ABV_Min <span class="sc">/</span> <span class="fl">100.0</span></span>
-<span id="cb8-2"><a href=""></a><span class="fu">asin</span>( <span class="fu">sqrt</span>( abv ) ) <span class="ot">-&gt;</span> abv<span class="fl">.1</span></span>
-<span id="cb8-3"><a href=""></a><span class="fu">shapiro.test</span>( abv<span class="fl">.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href=""></a><span class="fu">asin</span>(<span class="fu">sqrt</span>(abv)) <span class="ot">-&gt;</span> abv<span class="fl">.1</span></span>
+<span id="cb8-3"><a href=""></a><span class="fu">shapiro.test</span>(abv<span class="fl">.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -486,34 +491,32 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <section id="data-transformations---box-cox-1" class="slide level2">
 <h2>Data Transformations - Box Cox</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>test_boxcox <span class="ot">&lt;-</span> <span class="cf">function</span>( x, <span class="at">lambdas =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>, <span class="at">by =</span> <span class="fl">0.015</span>) ) {</span>
-<span id="cb10-2"><a href=""></a>  ret <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">Lambda =</span> lambdas,</span>
-<span id="cb10-3"><a href=""></a>                     <span class="at">W =</span> <span class="cn">NA</span>,</span>
-<span id="cb10-4"><a href=""></a>                     <span class="at">P =</span> <span class="cn">NA</span>)</span>
-<span id="cb10-5"><a href=""></a>  </span>
-<span id="cb10-6"><a href=""></a>  <span class="cf">for</span>( lambda <span class="cf">in</span> lambdas ) {</span>
-<span id="cb10-7"><a href=""></a>    x.tilde <span class="ot">&lt;-</span> (x<span class="sc">^</span>lambda <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> lambda   </span>
-<span id="cb10-8"><a href=""></a>    w <span class="ot">&lt;-</span> <span class="fu">shapiro.test</span>( x.tilde )</span>
-<span id="cb10-9"><a href=""></a>    ret<span class="sc">$</span>W[ ret<span class="sc">$</span>Lambda <span class="sc">==</span> lambda ] <span class="ot">&lt;-</span> w<span class="sc">$</span>statistic</span>
-<span id="cb10-10"><a href=""></a>    ret<span class="sc">$</span>P[ ret<span class="sc">$</span>Lambda <span class="sc">==</span> lambda ] <span class="ot">&lt;-</span> w<span class="sc">$</span>p.value</span>
-<span id="cb10-11"><a href=""></a>  }</span>
-<span id="cb10-12"><a href=""></a>  </span>
-<span id="cb10-13"><a href=""></a>  <span class="fu">return</span>( ret )</span>
-<span id="cb10-14"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>test_boxcox <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">lambdas =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>, <span class="at">by =</span> <span class="fl">0.015</span>)) {</span>
+<span id="cb10-2"><a href=""></a>  ret <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Lambda =</span> lambdas, <span class="at">W =</span> <span class="cn">NA</span>, <span class="at">P =</span> <span class="cn">NA</span>)</span>
+<span id="cb10-3"><a href=""></a></span>
+<span id="cb10-4"><a href=""></a>  <span class="cf">for</span> (lambda <span class="cf">in</span> lambdas) {</span>
+<span id="cb10-5"><a href=""></a>    x.tilde <span class="ot">&lt;-</span> (x<span class="sc">^</span>lambda <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> lambda</span>
+<span id="cb10-6"><a href=""></a>    w <span class="ot">&lt;-</span> <span class="fu">shapiro.test</span>(x.tilde)</span>
+<span id="cb10-7"><a href=""></a>    ret<span class="sc">$</span>W[ret<span class="sc">$</span>Lambda <span class="sc">==</span> lambda] <span class="ot">&lt;-</span> w<span class="sc">$</span>statistic</span>
+<span id="cb10-8"><a href=""></a>    ret<span class="sc">$</span>P[ret<span class="sc">$</span>Lambda <span class="sc">==</span> lambda] <span class="ot">&lt;-</span> w<span class="sc">$</span>p.value</span>
+<span id="cb10-9"><a href=""></a>  }</span>
+<span id="cb10-10"><a href=""></a></span>
+<span id="cb10-11"><a href=""></a>  <span class="fu">return</span>(ret)</span>
+<span id="cb10-12"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="data-transformations---box-cox-2" class="slide level2">
 <h2>Data Transformations - Box Cox</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>vals <span class="ot">&lt;-</span> <span class="fu">test_boxcox</span>( beer<span class="sc">$</span>ABV_Min ) </span>
-<span id="cb11-2"><a href=""></a>vals <span class="sc">|&gt;</span> <span class="fu">ggplot</span>( <span class="fu">aes</span>(Lambda, P) ) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>vals <span class="ot">&lt;-</span> <span class="fu">test_boxcox</span>(beer<span class="sc">$</span>ABV_Min)</span>
+<span id="cb11-2"><a href=""></a>vals <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Lambda, P)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
 <section id="still-not-normal" class="slide level2">
 <h2>Still Not Normal?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>vals[ <span class="fu">which</span>( vals<span class="sc">$</span>P <span class="sc">==</span> <span class="fu">max</span>( vals<span class="sc">$</span>P ) ), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>vals[<span class="fu">which</span>(vals<span class="sc">$</span>P <span class="sc">==</span> <span class="fu">max</span>(vals<span class="sc">$</span>P)), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Lambda        W          P
 82  0.115 0.973805 0.04351988</code></pre>
@@ -589,15 +592,15 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <section id="do-og-fg-qualify-for-pearson" class="slide level2">
 <h2>Do OG &amp; FG Qualify for Pearson?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">shapiro.test</span>( beer<span class="sc">$</span>OG_Max )<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">shapiro.test</span>(beer<span class="sc">$</span>OG_Max)<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.923811e-07</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">shapiro.test</span>( beer<span class="sc">$</span>FG_Max )<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">shapiro.test</span>(beer<span class="sc">$</span>FG_Max)<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.26812e-07</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">shapiro.test</span>( <span class="fu">log</span>( beer<span class="sc">$</span>FG_Max ) )<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">shapiro.test</span>(<span class="fu">log</span>(beer<span class="sc">$</span>FG_Max))<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.662322e-07</code></pre>
 </div>
@@ -610,8 +613,8 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <h2>The Correlation Test</h2>
 <p>As we’ve used several times so far, the <code>cor.test()</code> function performs simple correlation analysis, with a deafult Pearson Product Moment analysis.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">cor.test</span>( beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max ) <span class="ot">-&gt;</span> OG.FG.pearson</span>
-<span id="cb20-2"><a href=""></a> OG.FG.pearson</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">cor.test</span>(beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max) <span class="ot">-&gt;</span> OG.FG.pearson</span>
+<span id="cb20-2"><a href=""></a>OG.FG.pearson</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -631,7 +634,7 @@ sample estimates:
 <h2>The Correlation Test</h2>
 <p>Again, the object that is returned is a <code>list</code> and has these components.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">names</span>( OG.FG.pearson )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">names</span>(OG.FG.pearson)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
 [6] "alternative" "method"      "data.name"   "conf.int"   </code></pre>
@@ -646,9 +649,8 @@ sample estimates:
 <section id="non-parametric-correlation---spearmans-rho-1" class="slide level2">
 <h2>Non-Parametric Correlation - Spearman’s Rho</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>OG.FG.spearman <span class="ot">&lt;-</span> <span class="fu">cor.test</span>( beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max, </span>
-<span id="cb24-2"><a href=""></a>                            <span class="at">method =</span> <span class="st">"spearman"</span> )</span>
-<span id="cb24-3"><a href=""></a>OG.FG.spearman</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>OG.FG.spearman <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(beer<span class="sc">$</span>OG_Max, beer<span class="sc">$</span>FG_Max, <span class="at">method =</span> <span class="st">"spearman"</span>)</span>
+<span id="cb24-2"><a href=""></a>OG.FG.spearman</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Spearman's rank correlation rho
@@ -704,17 +706,17 @@ sample estimates:
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>x <span class="ot">&lt;-</span> beer<span class="sc">$</span>OG_Max</span>
 <span id="cb26-2"><a href=""></a>y <span class="ot">&lt;-</span> beer<span class="sc">$</span>FG_Max</span>
-<span id="cb26-3"><a href=""></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">Estimate =</span> <span class="fu">factor</span>( <span class="fu">c</span>( <span class="st">"Original"</span>,</span>
-<span id="cb26-4"><a href=""></a>                                        <span class="fu">rep</span>(<span class="st">"Permuted"</span>, <span class="dv">999</span>))), </span>
-<span id="cb26-5"><a href=""></a>                  <span class="at">rho =</span>  <span class="fu">c</span>( OG.FG.spearman<span class="sc">$</span>estimate,</span>
-<span id="cb26-6"><a href=""></a>                            <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">999</span>)) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-3"><a href=""></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb26-4"><a href=""></a>  <span class="at">Estimate =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"Original"</span>, <span class="fu">rep</span>(<span class="st">"Permuted"</span>, <span class="dv">999</span>))),</span>
+<span id="cb26-5"><a href=""></a>  <span class="at">rho =</span> <span class="fu">c</span>(OG.FG.spearman<span class="sc">$</span>estimate, <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">999</span>))</span>
+<span id="cb26-6"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="setting-up-the-permutation" class="slide level2">
 <h2>Setting Up the Permutation</h2>
 <p>&nbsp;</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">head</span>( df )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">head</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Estimate       rho
 1 Original 0.7644328
@@ -753,21 +755,23 @@ sample estimates:
 <h2>Permuting “Under the Null”</h2>
 <p>Shuffle the <code>y</code> variable and recalculate the test statistic 999 times.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">set.seed</span>( <span class="dv">543</span> )</span>
-<span id="cb29-2"><a href=""></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
-<span id="cb29-3"><a href=""></a>  yhat <span class="ot">&lt;-</span> <span class="fu">sample</span>( y,   <span class="co"># this shuffles the data in y</span></span>
-<span id="cb29-4"><a href=""></a>                  <span class="at">size =</span> <span class="fu">length</span>(y), </span>
-<span id="cb29-5"><a href=""></a>                  <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb29-6"><a href=""></a>  df<span class="sc">$</span>rho[i] <span class="ot">&lt;-</span> <span class="fu">cor</span>( x, yhat, <span class="at">method =</span> <span class="st">"spearman"</span> )</span>
-<span id="cb29-7"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">543</span>)</span>
+<span id="cb29-2"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb29-3"><a href=""></a>  yhat <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb29-4"><a href=""></a>    y, <span class="co"># this shuffles the data in y</span></span>
+<span id="cb29-5"><a href=""></a>    <span class="at">size =</span> <span class="fu">length</span>(y),</span>
+<span id="cb29-6"><a href=""></a>    <span class="at">replace =</span> <span class="cn">FALSE</span></span>
+<span id="cb29-7"><a href=""></a>  )</span>
+<span id="cb29-8"><a href=""></a>  df<span class="sc">$</span>rho[i] <span class="ot">&lt;-</span> <span class="fu">cor</span>(x, yhat, <span class="at">method =</span> <span class="st">"spearman"</span>)</span>
+<span id="cb29-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="visualizing-the-null" class="slide level2">
 <h2>Visualizing the NULL</h2>
 <p>Probability of a value as extreme or greater than the original estimate <span class="math inline">\(\to\)</span> P-value.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">ggplot</span>( df ) <span class="sc">+</span> </span>
-<span id="cb30-2"><a href=""></a>  <span class="fu">geom_histogram</span>( <span class="fu">aes</span>(rho, <span class="at">fill=</span>Estimate ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb30-2"><a href=""></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(rho, <span class="at">fill =</span> Estimate))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
@@ -775,7 +779,7 @@ sample estimates:
 <h2>The Permutation P-Value</h2>
 <p>The fraction of the 1,000 values (original included) at least as extreme as the original.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">sum</span>( <span class="fu">abs</span>( df<span class="sc">$</span>rho ) <span class="sc">&gt;=</span> <span class="fu">abs</span>( df<span class="sc">$</span>rho[<span class="dv">1</span>] ) ) <span class="sc">/</span> <span class="dv">1000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">sum</span>(<span class="fu">abs</span>(df<span class="sc">$</span>rho) <span class="sc">&gt;=</span> <span class="fu">abs</span>(df<span class="sc">$</span>rho[<span class="dv">1</span>])) <span class="sc">/</span> <span class="dv">1000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.001</code></pre>
 </div>
