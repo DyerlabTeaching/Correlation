@@ -8,6 +8,19 @@ format: dyerlab-revealjs
 
 ## &nbsp;
 
+
+```{r}
+#| echo: false
+#| fig-align: center
+source("_extensions/dyerlab/figures_dyerlab.R")
+variable_types_grid(highlight = "correlation")
+```
+
+
+
+
+## &nbsp;
+
 ```{r}
 #| echo: false
 #| message: false
@@ -17,18 +30,10 @@ library(fontawesome)
 theme_set(theme_minimal(base_size = 16))
 ```
 
+
 > ### Correlation is a condition that indicates the extent to which two variables change in a coordinate fashion.  <br/>&nbsp;<br/> This <font color="red">does not</font> imply they are functionally linked or causal in nature.
 
 
-
-## Choosing an Approach
-
-```{r}
-#| echo: false
-#| fig-align: center
-source("_extensions/dyerlab/figures_dyerlab.R")
-variable_types_grid(highlight = "correlation")
-```
 
 
 # Background {background-color="black" background-image="media/contour.png" background-size="initial" background-position="right"}
