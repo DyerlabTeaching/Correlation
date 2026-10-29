@@ -21,6 +21,16 @@ theme_set(theme_minimal(base_size = 16))
 
 
 
+## Choosing an Approach
+
+```{r}
+#| echo: false
+#| fig-align: center
+source("_extensions/dyerlab/figures_dyerlab.R")
+variable_types_grid(highlight = "correlation")
+```
+
+
 # Background {background-color="black" background-image="media/contour.png" background-size="initial" background-position="right"}
 
 
