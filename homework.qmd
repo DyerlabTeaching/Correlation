@@ -73,18 +73,28 @@ Spearman's test works on ranks, and several styles share the same maximum ABV or
 > **Permutation.** To get a *P*-value that does not depend on that approximation, we shuffled the IBU values 999 times, recomputed Spearman's $\rho$ for each shuffle, and counted how often a shuffled correlation was at least as large (in absolute value) as the observed one. The observed value counts as one of the 1,000.
 
 ```{r}
+#| message: false
+df <- data.frame( Estimate = factor( c( "Original",
+                                        rep( "Permuted", 999 ) ) ),
+                  rho = c( fit$estimate,
+                           rep( NA, 999 ) ) )
+
 set.seed( 543 )
-rho_perm <- numeric( 999 )
-for( i in 1:999 ) {
-  rho_perm[i] <- cor( abv, sample( ibu ), method = "spearman" )
+for( i in 2:1000 ) {
+  yhat <- sample( ibu,   # this shuffles the data in ibu
+                  size = length( ibu ),
+                  replace = FALSE )
+  df$rho[i] <- cor( abv, yhat, method = "spearman" )
 }
-hist( rho_perm, xlim = c( -1, 1 ), main = "Permuted Spearman correlations" )
-abline( v = fit$estimate, col = "red" )
-P_perm <- ( sum( abs( rho_perm ) >= abs( fit$estimate ) ) + 1 ) / 1000
+
+ggplot( df ) +
+  geom_histogram( aes( rho, fill = Estimate ) )
+
+P_perm <- sum( abs( df$rho ) >= abs( df$rho[1] ) ) / 1000
 P_perm
 ```
 
-The red line is the observed correlation, far outside every shuffled value, so the permutation *P*-value is as small as 999 shuffles can measure: 1/1000.
+The original value sits far outside every shuffled value, so the permutation *P*-value is as small as 999 shuffles can measure: 1/1000.
 
 ### Preparing the reporting values
 

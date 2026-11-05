@@ -97,9 +97,24 @@ The data consist of the following categories of data.  For all but the first two
 - *IBU* - The 'International Bitterness Unit' which roughly measures the amount of $\alpha$-acids (asymptotically) added to the beer by the hops.  This is a non-negative numerical value, with higher values indicating more bitter beer, though human ability to taste increasingly bitter beer is asymptotic.
 - *SRM* - The Standard Reference Method calibration measuring the color of the finished beer.  This is a non-negative integer going from 1 - 40 (light straw color - dark opaque).
 - *OG* - The amount of dissolved sugars in the wort (the pre-beer liquid prior to putting in yeast and the initiation of fermentation), relative to pure water.  This is a measurement 'relative' to water, which is 1.0.  Values less than 1.0 have lower liquid densities than pure water and those greater than 1.0 have more dissolved sugars than pure water.
-- *FG* - The amount of dissolved sugars in the beer after fermentation has been completed.  Same as above but the difference in *OG* and *FG* can tell us what the *ABV* should be.  Higher *FG* beers are more sweet and have more body than lower *OG* beers (which may appear to have a cleaner, drier, mouth feel—yes that is a real term as well).
+- *FG* - The amount of dissolved sugars in the beer after fermentation has been completed.  Same as above but the difference in *OG* and *FG* can tell us what the *ABV* should be.  Higher *FG* beers are more sweet and have more body than lower *FG* beers (which may appear to have a cleaner, drier, mouth feel—yes that is a real term as well).
 
 As we talk about correlations, we will use these as examples.
+
+A good first look at a data set with several quantitative variables is a plot of every pair of them at once.  The `GGally` package extends `ggplot2` with a function that does exactly that, `ggpairs()`.  If you do not have the package yet, install it once with `install.packages("GGally")`.  Here it is for the maximum value of each characteristic.
+
+```{r}
+#| message: false
+#| fig-height: 7
+library( GGally )
+beer |>
+  select( ABV_Max, IBU_Max, SRM_Max, OG_Max, FG_Max ) |>
+  ggpairs()
+```
+
+Each variable gets one row and one column.  The diagonal shows the density of that variable, the panels below it are scatter plots for each pair, and the panels above it give the correlation for that same pair.  There is a lot to see here before running a single test.  `ABV_Max` and `OG_Max` fall nearly on a straight line (correlation `r format( cor( beer$ABV_Max, beer$OG_Max ), digits = 3 )`), which makes sense since the sugars in the wort are what the yeast turns into alcohol.  Several of the densities also have long tails to the right, which should make us wonder whether these variables are normally distributed.
+
+Treat those printed correlations as a first look and not as results.  By default they are Pearson correlations, and the stars are that test's significance, whether or not the data meet its assumptions.  In the sections below, we will see how to check those assumptions and [choose a correlation](#choosing-a-correlation) that fits the data.
 
 
 ## Parameters & Estimates
@@ -143,13 +158,13 @@ qqnorm( beer$ABV_Min )
 qqline( beer$ABV_Min, col="red")
 ```
 
-So, what we commonly see is most of the data falling along the line throughout the middle portion of the distribution and then deviating around the edges.  What this does not do is give you a statistic to test to see if we can reject the hypothesis $H_O: Data\;is\;normal$.  For this, we can use the Shapiro-Wilkes Normality test which produces the statistic:
+So, what we commonly see is most of the data falling along the line throughout the middle portion of the distribution and then deviating around the edges.  What this does not do is give you a statistic to test to see if we can reject the hypothesis $H_O: Data\;is\;normal$.  For this, we can use the Shapiro-Wilk Normality test which produces the statistic:
 
 $$
-W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
+W = \frac{\left(\sum_{i=1}^Na_ix_{(i)}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
 $$
 
-where $N$ is the number of samples, $a_i$ is a standardizing coefficient, $x_i$ is the $i^{th}$ value of $x$, $\bar{x}$ is the mean of the observed values, and $R_{x_i}$ is the rank of the $x_i^{th}$ observation.
+where $N$ is the number of samples, $a_i$ is a standardizing coefficient, $x_i$ is the $i^{th}$ value of $x$, $\bar{x}$ is the mean of the observed values, and $x_{(i)}$ is the $i^{th}$ smallest value once the data are sorted.
 
 ```{r}
 shapiro.test( beer$ABV_Min )
@@ -216,7 +231,7 @@ vals |>
 
 ```
 
-So if you look at this plot, it shows the P-value of the Shapiro-Wilkes test across a range of values.  Depending upon the level of rigor, this approaches the $\alpha = 0.05$ value closest at:
+So if you look at this plot, it shows the P-value of the Shapiro-Wilk test across a range of values.  Depending upon the level of rigor, this approaches the $\alpha = 0.05$ value closest at:
 
 ```{r}
 best <- vals[ which(vals$P == max( vals$P)),]
@@ -259,13 +274,13 @@ Whatever path you take, report every step of it: the normality tests, any transf
 
 ## Parametric Test: Pearson Product Moment Correlations
 
-By far, the most common correlation statistic we see is the Pearson Product Moment Correlation, denoted as $\rho$.  For two variables, $x$ and $y$, the correlation parameter is estimated as:
+By far, the most common correlation statistic we see is the Pearson Product Moment Correlation.  The parameter is denoted as $\rho$, and for two variables, $x$ and $y$, we estimate it from our data as $r$:
 
 $$
-\rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}
+r = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}
 $$
 
-The values of these data fall within the range of: $-1 \le \rho \le +1$ with negative values indicating that when one variable goes up, the other goes down.  Positive values of a correlation indicate that both variable change systematically in the same direction (e.g., both up or both down).
+The values of these data fall within the range of: $-1 \le \rho \le +1$ with negative values indicating that when one variable goes up, the other goes down.  Positive values of a correlation indicate that both variables change systematically in the same direction (e.g., both up or both down).
 
 Here are some examples of the distribution of two variables and their associated correlation coefficient.
 
@@ -303,11 +318,11 @@ Of particular note are the components associated with the results object that al
 names( OG.FG.pearson )
 ```
 
-For example, `OG.FG.pearson$estimate` is the correlation, `r format( OG.FG.pearson$estimate, digits=3 )`, and `OG.FG.pearson$p.value` is its *P*-value.  Pulling values out of the result like this, rather than retyping them, is how you report them in your own write-ups.
+For example, `OG.FG.pearson$estimate` is the correlation, `r format( OG.FG.pearson$estimate, digits=3 )`, `OG.FG.pearson$p.value` is its *P*-value, and `OG.FG.pearson$conf.int` is its 95% confidence interval (`r format( OG.FG.pearson$conf.int[1], digits=3 )` to `r format( OG.FG.pearson$conf.int[2], digits=3 )`).  `R` builds that interval with Fisher's $z$ transformation, which relies on both variables being normal.  Pulling values out of the result like this, rather than retyping them, is how you report them in your own write-ups.
 
 ## Non-Parametric Test: Spearman's Rho
 
-When the data are not normal and no transformation fixes them, as with the gravities above, we move to step 3 of the decision path: a correlation test that does not rely upon parametric assumptions.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  Ranks are always the integers $1$ to $N$, no matter how skewed or long-tailed the raw values are, so their distribution is never the problem.
+When the data are not normal and no transformation fixes them, as with the gravities above, we move to step 3 of the decision path: a correlation test that does not rely upon parametric assumptions.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  Ranks always run from $1$ to $N$ (tied values share the average of their ranks), no matter how skewed or long-tailed the raw values are, so their distribution is never the problem.
 
 The form of the estimator for this is almost identical to that of the Pearson statistic except that instead of the raw data, we are replacing values with the ranks of each value instead.  In doing so, there is a loss of the breadth of the raw data since we are just using ranks, and if the underlying data are poorly behaved because of outliers or other issues, this takes care of it.
 
@@ -389,5 +404,7 @@ P_perm
 ```
 
 The original is the largest of the 1,000 values, so $P =$ `r P_perm`, the smallest *P* that 999 permutations can measure.  To resolve smaller *P*-values you would need more permutations.  Either way, the conclusion agrees with the approximate *P*-value from `cor.test()`: original and final gravity are significantly and positively correlated across beer styles.
+
+One caution before you shuffle anything.  A permutation test assumes the values are *exchangeable*: if $H_O$ is true, then any ordering of $y$ is as likely as any other.  That is reasonable for beer styles, but not for measurements taken in sequence, such as a sensor recording every 15 minutes, where each reading is similar to the one before it.  Shuffling destroys that structure, so the permuted correlations bunch up too tightly around zero and the *P*-value comes out too small.  This is the [independence assumption](#independence-of-data) again, and no choice of correlation statistic will get around it.
 
 

@@ -207,7 +207,44 @@ summary(beer)
 
 
 
-## Field Trip!    
+## Every Pair at Once
+
+The `GGally` package plots all pairs of variables with `ggpairs()`.
+
+```{r}
+#| echo: true
+#| eval: false
+library(GGally)
+beer |>
+  select(ABV_Max, IBU_Max, SRM_Max, OG_Max, FG_Max) |>
+  ggpairs()
+```
+
+- **Diagonal:** the density of each variable.
+- **Below:** a scatter plot for each pair.
+- **Above:** the correlation for that pair.
+
+
+## Every Pair at Once
+
+```{r}
+#| echo: false
+#| message: false
+#| fig-height: 5.5
+#| fig-width: 10
+library(GGally)
+beer |>
+  select(ABV_Max, IBU_Max, SRM_Max, OG_Max, FG_Max) |>
+  ggpairs()
+```
+
+::: aside
+A first look only: `Corr` is a Pearson correlation by default, whether or not the data qualify.
+:::
+
+
+
+## Field Trip!
 
 &nbsp;
 
@@ -228,7 +265,7 @@ summary(beer)
 ::: {.column width="50%"}
 ### Parameter
 
-Estimating the real value created by the the **entire** population of entities.  
+Estimating the real value created by the **entire** population of entities.  
 
 - Mean of the `real` population, $\mu$.
 
@@ -317,18 +354,18 @@ $H_O: Data\;are\;normal$
 
 
 $$
-W = \frac{\left(\sum_{i=1}^Na_iR_{x_i}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
+W = \frac{\left(\sum_{i=1}^Na_ix_{(i)}\right)^2}{\sum_{i=1}^N(x_i - \bar{x})^2}
 $$ 
 where: 
 
 - $N$ is the number of samples, 
-- $a_i$ is a standardizing coeeficient, 
+- $a_i$ is a standardizing coefficient, 
 - $x_i$ is the $i^{th}$ value of $x$, 
 - $\bar{x}$ is the mean of the observed values, and 
-- $R_{x_i}$ is the rank of the $x_i^{th}$ observation.
+- $x_{(i)}$ is the $i^{th}$ smallest value once the data are sorted.
 
 
-## Shapiro Wilkes Test
+## Shapiro-Wilk Test
 
 The default test for this in `R` is performed by the `shapiro.test()` function.  Here, we will look at the minimum ABV value from the beer dataset.
 
@@ -421,7 +458,7 @@ Real data often cannot be transformed to normality. When that happens, stop forc
 
 ## Equality of Variance
 
-It is assumed that the variance of the data are 
+It is assumed that the variance of the data is the same across the range of values.
 
 ```{r echo=FALSE}
 df <- data.frame(x = c(1, 1, 5, 5, 1), y = c(3, 4, 8, 1, 3))
@@ -473,11 +510,11 @@ Then report *every* step you took, not just the final test.
 
 &nbsp;
 
-$\rho = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}$
+$r = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}$
 
 &nbsp;
 
-whose values are confined to be within the range $-1.0 \le \rho \le +1.0$
+our estimate of the parameter $\rho$, whose values are confined to be within the range $-1.0 \le \rho \le +1.0$
 
 &nbsp;
 
@@ -514,7 +551,7 @@ No. Gravities all sit just above 1.0, so a log barely changes them. We run Pears
 
 ## The Correlation Test 
 
-As we've used several times so far, the `cor.test()` function performs simple correlation analysis, with a deafult Pearson Product Moment analysis.
+As we've used several times so far, the `cor.test()` function performs simple correlation analysis, with a default Pearson Product Moment analysis.
 
 ```{r}
 #| echo: true

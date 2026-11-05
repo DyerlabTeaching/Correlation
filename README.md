@@ -17,7 +17,7 @@ Measures of correlation allow you to tell the extent to which two variables syst
 > Learners will distinguish between parametric, non-parametric, and randomization-based approaches to hypothesis testing, and assess data normality using the Shapiro-Wilk test to decide which approach applies.
 
 - **Bloom's Levels:** Understand (distinguish approaches), Apply (run normality tests)
-- **Reinforces:** Extends the hypothesis-testing framework from Analysis of Variance into a new context: deciding *which* test's assumptions actually fit the data.
+- **Reinforces:** Formalizes the correlations used casually throughout the course and opens its final section on statistical inference: deciding *which* test's assumptions actually fit the data.
 - **Notes:** Normality testing here functions as a diagnostic step, not an end in itself — it determines the rest of the workflow.
 
 ### Quantify and Test Relationships Between Variables

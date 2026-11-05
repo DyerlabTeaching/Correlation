@@ -49,3 +49,9 @@ that need an author decision are left in place but wrapped in
 
 Reworked both around one decision path for choosing a correlation, matching the homework: test normality → try a transformation → Spearman if nothing works → permute when the *P*-value is only approximate. Added a "Choosing a Correlation" section/slide; the OG/FG example now checks normality first, runs Pearson only as a mechanics demo, reports Spearman, and permutes Spearman (not Pearson) with a computed *P*. All six flagged passages above are resolved: squared the normal-density exponent, finished the three truncated sentences, rewrote the significance sentence ($H_O: \rho = 0$; $t = r\sqrt{(N-2)/(1-r^2)}$, also wrong on the slides), and corrected the Spearman *P*-value description (exact without ties, $t$ approximation with ties).
 
+### narrative.qmd, slides.qmd & in-class.qmd — 2026-11-05
+
+Added a `GGally::ggpairs()` example where the beer data are introduced, since the in-class uses it, with a caution that its printed correlations are Pearson by default.  In-class question 1 now refers back to that example.
+
+Corrected the Shapiro-Wilk name and formula (ordered values, not ranks), labelled the Pearson estimator $r$, noted that tied values share ranks, and fixed typos.  The narrative now covers `$conf.int` and exchangeability.  The in-class changed from a list to pre-populated chunks with comments, adds questions on why Spearman gives no interval and why shuffling a time series misleads, and drops `WindDir` because direction is circular.  The homework and key now use the narrative's permutation pattern.
+
