@@ -16,7 +16,7 @@ A correlation statistic is only as good as the assumptions behind it. Pearson's 
 
 The write-up then reports every step it took, with every number read from a variable in memory using an inline `` `r ` `` expression, never typed by hand.
 
-[^ref-normal]: Normality testing with `qqnorm()` and `shapiro.test()` is covered in the narrative section [Testing for Normality](https://dyerlabteaching.github.io/Correlation/narrative.html#testing-for-normality.), transformations in [Transformations](https://dyerlabteaching.github.io/Correlation/narrative.html#transformations), the two correlation methods in [Pearson](https://dyerlabteaching.github.io/Correlation/narrative.html#parametric-test-pearson-product-moment-correlations) and [Spearman](https://dyerlabteaching.github.io/Correlation/narrative.html#non-parametric-test-spearmans-rho), and permutation in [Permutation Testing for Significance](https://dyerlabteaching.github.io/Correlation/narrative.html#permutation-testing-for-significance).
+[^ref-normal]: Normality testing with `qqnorm()` and `shapiro.test()` is covered in the narrative section [Testing for Normality](https://dyerlabteaching.github.io/Correlation/narrative.html#testing-for-normality), transformations in [Transformations](https://dyerlabteaching.github.io/Correlation/narrative.html#transformations), the two correlation methods in [Pearson](https://dyerlabteaching.github.io/Correlation/narrative.html#parametric-test-pearson-product-moment-correlations) and [Spearman](https://dyerlabteaching.github.io/Correlation/narrative.html#non-parametric-test-spearmans-rho), and permutation in [Permutation Testing for Significance](https://dyerlabteaching.github.io/Correlation/narrative.html#permutation-testing-for-significance).
 
 This assignment has you practice that habit on the beer styles data from the module. Read the worked example, then reproduce its structure for beer color and final gravity.
 
@@ -142,7 +142,7 @@ Your document should have:
 Then answer briefly, a sentence or two each:
 
 - Spearman's $\rho$ is computed from the *ranks* of the data rather than the raw values. Why does that free it from the normality assumption, and what information about the data do you give up in exchange?
-- Darker beer styles tend to have higher final gravity. Does your result show that making a beer darker makes it sweeter and fuller-bodied? Explain what a correlation can and cannot tell you here.
+- A brewer reads your result and concludes that changing a beer's color would change how sweet and full-bodied it is. Does your result show that? Explain what a correlation can and cannot tell you here.
 
 ## What You Turn In
 

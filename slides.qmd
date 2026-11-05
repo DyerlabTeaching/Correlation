@@ -85,14 +85,13 @@ df |>
     method = 'lm',
     se = FALSE,
     color = "red",
-    size = 0.5
+    linewidth = 0.5
   ) +
-  geom_text(
-    aes(
-      x = 1.5,
-      y = 115,
-      label = paste("Correlation = ", format(cor(df[, 2], df[, 3]), digits = 3))
-    ),
+  annotate(
+    "text",
+    x = 1.5,
+    y = 115,
+    label = paste("Correlation = ", format(cor(df[, 2], df[, 3]), digits = 3)),
     size = 6
   )
 ```
@@ -611,7 +610,7 @@ Compare $\rho$ and the P-value to the Pearson Product Moment. Since OG & FG are 
 
 
 
-## Permutation for Significance.
+## Permutation for Significance
 
 Another way to circumvent some of the constraints based upon the form of the data, we can use permutation to test significance directly, without any distributional approximation.
 
@@ -692,6 +691,7 @@ Probability of a value as extreme or greater than the original estimate $\to$ P-
 
 ```{r fig.height=5}
 #| echo: true
+#| message: false
 ggplot(df) +
   geom_histogram(aes(rho, fill = Estimate))
 ```

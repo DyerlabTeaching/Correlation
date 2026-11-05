@@ -55,3 +55,5 @@ Added a `GGally::ggpairs()` example where the beer data are introduced, since th
 
 Corrected the Shapiro-Wilk name and formula (ordered values, not ranks), labelled the Pearson estimator $r$, noted that tied values share ranks, and fixed typos.  The narrative now covers `$conf.int` and exchangeability.  The in-class changed from a list to pre-populated chunks with comments, adds questions on why Spearman gives no interval and why shuffling a time series misleads, and drops `WindDir` because direction is circular.  The homework and key now use the narrative's permutation pattern.
 
+Cleanup: replaced the single-row `geom_text()` with `annotate()` and silenced the `stat_bin` message so only the intentional ties warning remains; `size` to `linewidth` on the slides; Equal Variance and Independence of Data are now subsections of Parametric Assumptions; dropped the trailing period from "Testing for Normality" (homework link updated); new opening paragraph; the homework's causation question no longer gives away the direction of the result; the README objectives now include permutation.
+

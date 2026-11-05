@@ -22,7 +22,7 @@ Measures of correlation allow you to tell the extent to which two variables syst
 
 ### Quantify and Test Relationships Between Variables
 
-> Learners will apply data transformations where needed and use `cor.test()` to compute and test correlation coefficients under both parametric and non-parametric assumptions.
+> Learners will apply data transformations where needed, use `cor.test()` to compute and test correlation coefficients under both parametric and non-parametric assumptions, and estimate a *P*-value by permutation when the test's own is only approximate.
 
 - **Bloom's Levels:** Apply
 - **Reinforces:** Provides the first look at *association* between variables, setting up the transition to modeling relationships in Regression.

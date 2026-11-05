@@ -17,10 +17,10 @@ theme_set( theme_minimal( base_size = 16 ) )
 ```
 
 
-This topic is going to focus on developing the theory of correlations.  
+We have already used correlations casually, as a quick way to say that two variables go together.  This topic develops the theory behind them: what a correlation measures, what it assumes, and how to choose among the options when those assumptions do not hold.
 
 
-Consider the following data consisting of the decade from 1999 - 2009 and recording the number of movies each year by the actor Nicolas Cage (source IMDB) and the number of people who accidentally died by falling into a swimming pool (source U.S. Centers for Disease Control).
+Consider the following data, covering the years 1999 - 2009, which record the number of movies each year by the actor Nicolas Cage (source IMDB) and the number of people who accidentally died by falling into a swimming pool (source U.S. Centers for Disease Control).
 
 ```{r}
 df <- data.frame( Year = 1999:2009 )
@@ -32,6 +32,7 @@ df
 If we look at these data by year, it does not look like there is much of a trend (at least temporally).  We've talked about the `tidyr::pivot_longer` approach to take data like this and manipulate it.  There is another way to do this using the `reshape2` library using the function `melt()`. I recommend you go take a look at that to see how this works as well.  Both are valid ways.
 
 ```{r}
+#| message: false
 library( reshape2 )
 df |>
   melt( id = "Year" ) 
@@ -59,12 +60,13 @@ df |>
                method='lm',
                se=FALSE,
                color = "red") +
-  geom_text( aes(x=1.5,
-                 y=115,
-                 label = paste( "Correlation = ", 
-                                format( cor( df[,2],
-                                             df[,3]), 
-                                        digits=3) ) ) )
+  annotate( "text",
+            x = 1.5,
+            y = 115,
+            label = paste( "Correlation = ", 
+                           format( cor( df[,2],
+                                        df[,3]), 
+                                   digits=3) ) )
 ```
 
 And in fact, if we run the statistical test on these data.
@@ -83,6 +85,7 @@ Now, do we think that because Nicolas Cage makes more movies people are dying at
 For this topic, I thought I would turn to a bit of a more digestible set of data—data describing beer styles! There is a new CSV data set on the GitHub site located at the following URL.
 
 ```{r}
+#| message: false
 beer_url <- "https://dyerlabteaching.github.io/CourseData/Miscellaneous/Beer_Styles.csv"
 beer <- read_csv( beer_url )
 summary( beer )
@@ -126,7 +129,7 @@ In statistics, we have two kinds of entities, parameters and estimates, which ar
 
 For much of the statistics we use, there are underlying assumptions about the form of the data that we should look at.
 
-### Testing for Normality.
+### Testing for Normality
 
 > The data can be estimated by a normal density function, or at least can be transformed into data that is reasonably normal in distribution.
 
@@ -251,12 +254,12 @@ shapiro.test( abv.1)
 Again, not normal.  None of the transformations we tried makes `ABV_Min` normally distributed, and that happens a lot with real data.  When it does, we stop trying to force the data to fit the parametric assumptions and turn to a method that does not need them, which is where the correlation tests below are headed.
 
 
-## Equal Variance
+### Equal Variance
 
 Another parametric assumption is the equality of variance across a range of the data.  This means, for example, that the variance from one part of the experiment should not be different than the variance in samples from another portion of data.  We will return to this when we evaluate regression models.
 
 
-## Independence of Data
+### Independence of Data
 
 The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent.  You need to think about this very carefully as you design your experiments.
 
@@ -390,6 +393,7 @@ Now we can look at the distribution of permuted values and the original one and 
 
 
 ```{r}
+#| message: false
 ggplot( df ) + 
   geom_histogram( aes(rho, fill=Estimate ) )
 ```
