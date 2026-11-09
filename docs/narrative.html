@@ -249,21 +249,21 @@ sample estimates:
 </div>
 <p>We do in fact see a significant (P = 0.0253) relationship.</p>
 <p>Now, do we think that because Nicolas Cage makes more movies people are dying at an increased rate? No.&nbsp;These are spurious correlations, though do prove a point about causation.</p>
-<section id="some-new-data" class="level2">
-<h2 class="anchored" data-anchor-id="some-new-data">Some New Data</h2>
+<section id="some-new-data" class="level2 application">
+<h2 class="application anchored" data-anchor-id="some-new-data">Some New Data</h2>
 <p>For this topic, I thought I would turn to a bit of a more digestible set of data—data describing beer styles! There is a new CSV data set on the GitHub site located at the following URL.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>beer_url <span class="ot">&lt;-</span> <span class="st">"https://dyerlabteaching.github.io/CourseData/Miscellaneous/Beer_Styles.csv"</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>beer <span class="ot">&lt;-</span> <span class="fu">read_csv</span>( beer_url )</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( beer )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    Styles             Yeast              ABV_Min         ABV_Max      
- Length:100         Length:100         Min.   :2.400   Min.   : 3.200  
- Class :character   Class :character   1st Qu.:4.200   1st Qu.: 5.475  
- Mode  :character   Mode  :character   Median :4.600   Median : 6.000  
-                                       Mean   :4.947   Mean   : 6.768  
-                                       3rd Qu.:5.500   3rd Qu.: 8.000  
-                                       Max.   :9.000   Max.   :14.000  
+<pre><code>       Styles          Yeast        ABV_Min         ABV_Max      
+ Length   :100   Length   :100   Min.   :2.400   Min.   : 3.200  
+ N.unique :100   N.unique :  3   1st Qu.:4.200   1st Qu.: 5.475  
+ N.blank  :  0   N.blank  :  0   Median :4.600   Median : 6.000  
+ Min.nchar:  4   Min.nchar:  3   Mean   :4.947   Mean   : 6.768  
+ Max.nchar: 27   Max.nchar:  6   3rd Qu.:5.500   3rd Qu.: 8.000  
+                                 Max.   :9.000   Max.   :14.000  
     IBU_Min         IBU_Max          SRM_Min         SRM_Max     
  Min.   : 0.00   Min.   :  8.00   Min.   : 2.00   Min.   : 3.00  
  1st Qu.:15.00   1st Qu.: 25.00   1st Qu.: 3.50   1st Qu.: 7.00  
@@ -308,12 +308,12 @@ sample estimates:
 <p>Each variable gets one row and one column. The diagonal shows the density of that variable, the panels below it are scatter plots for each pair, and the panels above it give the correlation for that same pair. There is a lot to see here before running a single test. <code>ABV_Max</code> and <code>OG_Max</code> fall nearly on a straight line (correlation 0.954), which makes sense since the sugars in the wort are what the yeast turns into alcohol. Several of the densities also have long tails to the right, which should make us wonder whether these variables are normally distributed.</p>
 <p>Treat those printed correlations as a first look and not as results. By default they are Pearson correlations, and the stars are that test’s significance, whether or not the data meet its assumptions. In the sections below, we will see how to check those assumptions and <a href="#choosing-a-correlation">choose a correlation</a> that fits the data.</p>
 </section>
-<section id="parameters-estimates" class="level2">
-<h2 class="anchored" data-anchor-id="parameters-estimates">Parameters &amp; Estimates</h2>
+<section id="parameters-estimates" class="level2 theory">
+<h2 class="theory anchored" data-anchor-id="parameters-estimates">Parameters &amp; Estimates</h2>
 <p>In statistics, we have two kinds of entities, parameters and estimates, which are dualities of each other. The <code>TRUE</code> mean of a set of data is referred to by <span class="math inline">\(\mu\)</span> whereas the mean of the data we measured is referred to as <span class="math inline">\(\bar{x}\)</span>. The greek version is the <em>idealized</em> value for the parameter, something that we are striving to find the real estimate of. However, as a Frequentist, we can never actually get to that parameter (remember the actual population of data is infinite but we can only sample a small amount of it) and when we talk about the data associated with what we collect, we refer to it as an estimate and use normal variable names.</p>
 </section>
-<section id="parametric-assumptions" class="level2">
-<h2 class="anchored" data-anchor-id="parametric-assumptions">Parametric Assumptions</h2>
+<section id="parametric-assumptions" class="level2 theory application">
+<h2 class="theory application anchored" data-anchor-id="parametric-assumptions">Parametric Assumptions</h2>
 <p>For much of the statistics we use, there are underlying assumptions about the form of the data that we should look at.</p>
 <section id="testing-for-normality" class="level3">
 <h3 class="anchored" data-anchor-id="testing-for-normality">Testing for Normality</h3>
@@ -463,8 +463,8 @@ W = 0.96746, p-value = 0.01418</code></pre>
 <p>The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent. You need to think about this very carefully as you design your experiments.</p>
 </section>
 </section>
-<section id="choosing-a-correlation" class="level2">
-<h2 class="anchored" data-anchor-id="choosing-a-correlation">Choosing a Correlation</h2>
+<section id="choosing-a-correlation" class="level2 theory">
+<h2 class="theory anchored" data-anchor-id="choosing-a-correlation">Choosing a Correlation</h2>
 <p>The assumptions above are not just background; they decide which correlation we are allowed to use. For any pair of variables, we work down a short decision path and let the data make each choice:</p>
 <ol type="1">
 <li><strong>Test normality.</strong> If both variables are normal, use Pearson’s product-moment correlation.</li>
@@ -474,8 +474,8 @@ W = 0.96746, p-value = 0.01418</code></pre>
 </ol>
 <p>Whatever path you take, report every step of it: the normality tests, any transformations you tried, the correlation you chose, and why. The sections below cover each of the three correlation approaches, using the original and final gravity of the beer styles as a running example.</p>
 </section>
-<section id="parametric-test-pearson-product-moment-correlations" class="level2">
-<h2 class="anchored" data-anchor-id="parametric-test-pearson-product-moment-correlations">Parametric Test: Pearson Product Moment Correlations</h2>
+<section id="parametric-test-pearson-product-moment-correlations" class="level2 theory application">
+<h2 class="theory application anchored" data-anchor-id="parametric-test-pearson-product-moment-correlations">Parametric Test: Pearson Product Moment Correlations</h2>
 <p>By far, the most common correlation statistic we see is the Pearson Product Moment Correlation. The parameter is denoted as <span class="math inline">\(\rho\)</span>, and for two variables, <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, we estimate it from our data as <span class="math inline">\(r\)</span>:</p>
 <p><span class="math display">\[
 r = \frac{\sum_{i=1}^N(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^N(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^N(y_i - \bar{y})^2}}
@@ -557,8 +557,8 @@ sample estimates:
 </div>
 <p>For example, <code>OG.FG.pearson$estimate</code> is the correlation, 0.837, <code>OG.FG.pearson$p.value</code> is its <em>P</em>-value, and <code>OG.FG.pearson$conf.int</code> is its 95% confidence interval (0.767 to 0.888). <code>R</code> builds that interval with Fisher’s <span class="math inline">\(z\)</span> transformation, which relies on both variables being normal. Pulling values out of the result like this, rather than retyping them, is how you report them in your own write-ups.</p>
 </section>
-<section id="non-parametric-test-spearmans-rho" class="level2">
-<h2 class="anchored" data-anchor-id="non-parametric-test-spearmans-rho">Non-Parametric Test: Spearman’s Rho</h2>
+<section id="non-parametric-test-spearmans-rho" class="level2 theory application">
+<h2 class="theory application anchored" data-anchor-id="non-parametric-test-spearmans-rho">Non-Parametric Test: Spearman’s Rho</h2>
 <p>When the data are not normal and no transformation fixes them, as with the gravities above, we move to step 3 of the decision path: a correlation test that does not rely upon parametric assumptions. Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic. Ranks always run from <span class="math inline">\(1\)</span> to <span class="math inline">\(N\)</span> (tied values share the average of their ranks), no matter how skewed or long-tailed the raw values are, so their distribution is never the problem.</p>
 <p>The form of the estimator for this is almost identical to that of the Pearson statistic except that instead of the raw data, we are replacing values with the ranks of each value instead. In doing so, there is a loss of the breadth of the raw data since we are just using ranks, and if the underlying data are poorly behaved because of outliers or other issues, this takes care of it.</p>
 <p><span class="math display">\[
@@ -570,7 +570,7 @@ sample estimates:
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">method =</span> <span class="st">"spearman"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(beer$OG_Max, beer$FG_Max, method = "spearman"):
-Cannot compute exact p-value with ties</code></pre>
+cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>OG.FG.spearman</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -588,8 +588,8 @@ sample estimates:
 <p>Spearman’s <span class="math inline">\(\rho =\)</span> 0.764 is noticeably smaller than the Pearson value of 0.837. Because the gravities are not normal, the Spearman value is the one to report.</p>
 <p>Notice the warning that <code>R</code> “cannot compute exact p-value with ties.” Many beer styles share the same maximum gravity, and those tied ranks mean the <em>P</em>-value above is an approximation. That is not an error, but it does tell us we are at step 4 of the decision path.</p>
 </section>
-<section id="permutation-testing-for-significance" class="level2">
-<h2 class="anchored" data-anchor-id="permutation-testing-for-significance">Permutation Testing for Significance</h2>
+<section id="permutation-testing-for-significance" class="level2 theory application">
+<h2 class="theory application anchored" data-anchor-id="permutation-testing-for-significance">Permutation Testing for Significance</h2>
 <p>In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we used the <span class="math inline">\(t\)</span> distribution, which is only correct when the data are normal. For Spearman, <code>R</code> computes an <em>exact</em> <em>P</em>-value when it can, by counting the number of ways the ranks could be arranged. When there are ties in the data (or the sample is very large) it cannot, and it falls back on a <span class="math inline">\(t\)</span> approximation instead, which is what happened with the gravities above.</p>
 <p>Another way of doing this is based upon permutation and this approach can be applied to a wide array of questions. For correlations, if we consider the null hypothesis <span class="math inline">\(H_O: \rho = 0\)</span> we can make a few inferences. If this hypothesis is true then we are, essentially, saying that the current relationship between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> has no intrinsic relationship as there is no correlation. This is, by default, what the null hypothesis says.</p>
 <p>If that is true, however, that means that any permutation of one of the variables, say <span class="math inline">\(y\)</span>, should produce a correlation statistic that is just as large as any other permutation of the data. This is key.</p>
@@ -611,7 +611,7 @@ sample estimates:
                 Mean   :0.7644  
                 3rd Qu.:0.7644  
                 Max.   :0.7644  
-                NA's   :999     </code></pre>
+                NAs    :999     </code></pre>
 </div>
 </div>
 <p>Now, we can go through the 999 <code>NA</code> values we put into that data frame and:<br>
