@@ -80,7 +80,7 @@ We do in fact see a significant (P = `r format( fit.cage$p.value, digits=3) `) r
 
 Now, do we think that because Nicolas Cage makes more movies people are dying at an increased rate?  No.  These are spurious correlations, though do prove a point about causation.
 
-## Some New Data
+## Some New Data {.application}
 
 For this topic, I thought I would turn to a bit of a more digestible set of data—data describing beer styles! There is a new CSV data set on the GitHub site located at the following URL.
 
@@ -120,12 +120,12 @@ Each variable gets one row and one column.  The diagonal shows the density of th
 Treat those printed correlations as a first look and not as results.  By default they are Pearson correlations, and the stars are that test's significance, whether or not the data meet its assumptions.  In the sections below, we will see how to check those assumptions and [choose a correlation](#choosing-a-correlation) that fits the data.
 
 
-## Parameters & Estimates
+## Parameters & Estimates {.theory}
 
 In statistics, we have two kinds of entities, parameters and estimates, which are dualities of each other.  The `TRUE` mean of a set of data is referred to by $\mu$ whereas the mean of the data we measured is referred to as $\bar{x}$.  The greek version is the *idealized* value for the parameter, something that we are striving to find the real estimate of.  However, as a Frequentist, we can never actually get to that parameter (remember the actual population of data is infinite but we can only sample a small amount of it) and when we talk about the data associated with what we collect, we refer to it as an estimate and use normal variable names.
 
 
-## Parametric Assumptions
+## Parametric Assumptions {.theory .application}
 
 For much of the statistics we use, there are underlying assumptions about the form of the data that we should look at.
 
@@ -264,7 +264,7 @@ Another parametric assumption is the equality of variance across a range of the 
 The samples you collect, and the way that you design your experiments are most important to ensure that your data are individually independent.  You need to think about this very carefully as you design your experiments.
 
 
-## Choosing a Correlation
+## Choosing a Correlation {.theory}
 
 The assumptions above are not just background; they decide which correlation we are allowed to use.  For any pair of variables, we work down a short decision path and let the data make each choice:
 
@@ -275,7 +275,7 @@ The assumptions above are not just background; they decide which correlation we 
 
 Whatever path you take, report every step of it: the normality tests, any transformations you tried, the correlation you chose, and why.  The sections below cover each of the three correlation approaches, using the original and final gravity of the beer styles as a running example.
 
-## Parametric Test: Pearson Product Moment Correlations
+## Parametric Test: Pearson Product Moment Correlations {.theory .application}
 
 By far, the most common correlation statistic we see is the Pearson Product Moment Correlation.  The parameter is denoted as $\rho$, and for two variables, $x$ and $y$, we estimate it from our data as $r$:
 
@@ -323,7 +323,7 @@ names( OG.FG.pearson )
 
 For example, `OG.FG.pearson$estimate` is the correlation, `r format( OG.FG.pearson$estimate, digits=3 )`, `OG.FG.pearson$p.value` is its *P*-value, and `OG.FG.pearson$conf.int` is its 95% confidence interval (`r format( OG.FG.pearson$conf.int[1], digits=3 )` to `r format( OG.FG.pearson$conf.int[2], digits=3 )`).  `R` builds that interval with Fisher's $z$ transformation, which relies on both variables being normal.  Pulling values out of the result like this, rather than retyping them, is how you report them in your own write-ups.
 
-## Non-Parametric Test: Spearman's Rho
+## Non-Parametric Test: Spearman's Rho {.theory .application}
 
 When the data are not normal and no transformation fixes them, as with the gravities above, we move to step 3 of the decision path: a correlation test that does not rely upon parametric assumptions.  Most non-parametric tests are based upon ranks of the data rather than the assumption of normality of the data that is necessary for the Pearson Product Moment statistic.  Ranks always run from $1$ to $N$ (tied values share the average of their ranks), no matter how skewed or long-tailed the raw values are, so their distribution is never the problem.
 
@@ -346,7 +346,7 @@ Spearman's $\rho =$ `r format( OG.FG.spearman$estimate, digits=3 )` is noticeabl
 Notice the warning that `R` "cannot compute exact p-value with ties."  Many beer styles share the same maximum gravity, and those tied ranks mean the *P*-value above is an approximation.  That is not an error, but it does tell us we are at step 4 of the decision path.
 
 
-## Permutation Testing for Significance
+## Permutation Testing for Significance {.theory .application}
 
 In both of the previous methods, we used specific approaches to evaluate the significance of the statistic. For Pearson, we used the $t$ distribution, which is only correct when the data are normal.  For Spearman, `R` computes an *exact* *P*-value when it can, by counting the number of ways the ranks could be arranged.  When there are ties in the data (or the sample is very large) it cannot, and it falls back on a $t$ approximation instead, which is what happened with the gravities above.
 
