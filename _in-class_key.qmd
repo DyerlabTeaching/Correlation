@@ -1,0 +1,249 @@
+---
+title: "In Class Activity - Correlation (Key)"
+format: dyerlab-html
+---
+
+![](media/Buoy.jpeg){fig-alt="Two researchers on a boat servicing a yellow, solar-powered monitoring buoy on a wide river."}
+
+For this exercise, we are going to go back to work with our beloved Rice Rivers Center data.  The comments in each chunk lay out the steps; fill in the code beneath them, and answer the questions in your own words.
+
+```{r}
+#| message: false
+library( tidyverse )
+library( GGally )
+```
+
+These data are readings taken every 15 minutes from the buoy, from January through late March of 2014.
+
+```{r}
+url <- "https://dyerlabteaching.github.io/CourseData/Environmental/RiceRivers_2014.csv"
+rice <- read_csv( url )
+nrow( rice )
+```
+
+We will focus on the atmospheric measurements.  Wind direction is left out because it is measured around a circle, where 1° and 359° are nearly the same direction, and a correlation cannot see that.
+
+```{r}
+atmosphere <- rice |>
+  select( PAR, WindSpeed_mph, AirTempF, RelHumidity, BP_HG, Rain_in )
+summary( atmosphere )
+```
+
+
+## A First Look
+
+:::{.callout-tip title="Question"}
+**Question 1:** Use `ggpairs()` from the `GGally` package, as we did with the beer styles, to plot the atmospheric data.
+:::
+
+```{r}
+#| message: false
+#| fig-height: 8
+# Plot every pair of atmospheric variables with ggpairs().
+#  There are a lot of points, so this may take a moment to draw.
+atmosphere |>
+  ggpairs()
+```
+
+Several of these variables are far from normal.  `PAR` (light) is zero all night, so it piles up at zero; `Rain_in` is zero almost all of the time; and wind speed has a long tail to the right.  Keep that in mind before reaching for a Pearson correlation.
+
+
+## The Strongest Correlation
+
+:::{.callout-tip title="Question"}
+**Question 2:** Which pair of variables has the strongest correlation?  What is the 95% confidence interval on that correlation coefficient?
+:::
+
+```{r}
+# Find the strongest pair in your ggpairs() plot (largest value, ignoring the sign).
+cor( atmosphere ) |> round( digits = 3 )
+
+# Run cor.test() on that pair and keep the result in a variable.
+temp.bp.pearson <- cor.test( rice$AirTempF, rice$BP_HG )
+temp.bp.pearson
+
+# Pull the confidence interval out of the result.
+temp.bp.pearson$conf.int
+```
+
+The strongest pair is air temperature and barometric pressure, with $r =$ `r format( temp.bp.pearson$estimate, digits = 3 )`.  It is negative: when the pressure is high, the air tends to be cold.  The 95% confidence interval runs from `r format( temp.bp.pearson$conf.int[1], digits = 3 )` to `r format( temp.bp.pearson$conf.int[2], digits = 3 )`.  That interval is very narrow because it is based on `r format( nrow( rice ), big.mark = "," )` readings, but see Question 10 before you trust it.
+
+:::{.callout-tip title="Question"}
+**Question 3:** Run the same pair using Spearman's $\rho$ and look for the confidence interval.  Why is an interval not presented?  (Hint: look at what the Pearson interval relies on.)
+:::
+
+```{r}
+#| warning: false
+# Run cor.test() on the same pair with method = "spearman".
+temp.bp.spearman <- cor.test( rice$AirTempF, rice$BP_HG,
+                              method = "spearman" )
+temp.bp.spearman
+
+# Compare the names() of this result with those of the Pearson result.
+names( temp.bp.pearson )
+names( temp.bp.spearman )
+```
+
+The Spearman result has no `conf.int` element at all.  The Pearson interval comes from a formula that assumes the two variables are (bivariate) normal, which is what lets `R` say how far $r$ should wander from sample to sample.  Spearman's $\rho$ is computed on ranks precisely so that it does *not* make that assumption, and without a distribution to lean on there is no simple formula for the interval, so `cor.test()` does not give one.  (`R` also warns that it cannot compute an exact *P*-value because there are ties in the data; that *P*-value is an approximation.)
+
+
+## Working Down the Decision Path
+
+Now we will take one pair through the whole decision path from the narrative.  `shapiro.test()` only accepts up to 5,000 values, so we will use the first 40 readings of air temperature and barometric pressure, which cover about 10 hours on the morning of January 1.
+
+```{r}
+first40 <- rice[ 1:40, ]
+```
+
+:::{.callout-tip title="Question"}
+**Question 4:** Are air temperature and barometric pressure individually distributed as a normal random variable?
+:::
+
+```{r}
+#| layout-ncol: 2
+# Make a qqnorm() plot, with its qqline(), for AirTempF.
+qqnorm( first40$AirTempF, main = "AirTempF" )
+qqline( first40$AirTempF, col = "red" )
+
+# Make a qqnorm() plot, with its qqline(), for BP_HG.
+qqnorm( first40$BP_HG, main = "BP_HG" )
+qqline( first40$BP_HG, col = "red" )
+```
+
+```{r}
+# Run shapiro.test() on each one.
+sw.temp <- shapiro.test( first40$AirTempF )
+sw.bp <- shapiro.test( first40$BP_HG )
+sw.temp
+sw.bp
+```
+
+Air temperature is consistent with a normal distribution; we cannot reject $H_O$: *Data is normal* ($W =$ `r format( sw.temp$statistic, digits = 3 )`, $P =$ `r format( sw.temp$p.value, digits = 2 )`).  Barometric pressure is not ($W =$ `r format( sw.bp$statistic, digits = 3 )`, $P =$ `r format( sw.bp$p.value, digits = 2 )`).
+
+:::{.callout-tip title="Question"}
+**Question 5:** Is there something that 'looks' odd in the `qqnorm()` plot of the barometric pressure data?  Explain why those data are the way they are.
+:::
+
+```{r}
+# How many different values of BP_HG are there in these 40 readings?
+#  Try table() or unique().
+table( first40$BP_HG )
+length( unique( first40$BP_HG ) )
+```
+
+The pressure points fall in flat horizontal steps instead of a smooth line.  There are only `r length( unique( first40$BP_HG ) )` different values among 40 readings, because the sensor records pressure to the nearest 0.01 inch of mercury and the pressure barely changes over 10 hours.  So most readings are tied with several others.  Temperature, recorded to the nearest 0.01°F but moving several degrees over the morning, has almost no ties.
+
+:::{.callout-tip title="Question"}
+**Question 6:** If a variable is not normal, can a transformation fix it?
+:::
+
+```{r}
+# Transform any variable that is not normal, and run shapiro.test() again.
+#  Try at least one transformation from the narrative.
+shapiro.test( log( first40$BP_HG ) )
+shapiro.test( sqrt( first40$BP_HG ) )
+
+# Box-Cox, using the function from the narrative
+test_boxcox <- function( x, lambdas = seq(-1.1, 1.1, by = 0.015) ) {
+  ret <- data.frame( Lambda = lambdas,
+                     W = NA,
+                     P = NA)
+  for( lambda in lambdas ) {
+    x.tilde <- (x^lambda - 1) / lambda
+    w <- shapiro.test( x.tilde )
+    ret$W[ ret$Lambda == lambda ] <- w$statistic
+    ret$P[ ret$Lambda == lambda ] <- w$p.value
+  }
+  return( ret )
+}
+
+vals <- test_boxcox( first40$BP_HG )
+max( vals$P )
+```
+
+No.  The log, the square root, and the best Box-Cox $\lambda$ all leave $P$ well below 0.05; $W$ hardly moves.  This is the same problem as the beer gravities in the narrative: the values sit in a very narrow range (30.29 to 30.37), so a smooth transformation barely changes their shape.  And no transformation can break ties, because a transformation maps equal values to equal values, so the steps in the `qqnorm()` plot stay.
+
+:::{.callout-tip title="Question"}
+**Question 7:** Given your findings, which correlation statistic is most appropriate for this subset of the data?  Say why, then estimate it.
+:::
+
+```{r}
+#| warning: false
+# Run cor.test() using the method you chose.
+first40.spearman <- cor.test( first40$AirTempF, first40$BP_HG,
+                              method = "spearman" )
+first40.spearman
+```
+
+Spearman's $\rho$.  Pearson needs *both* variables to be normal, and barometric pressure is not, even after transforming it, so we move to the next step of the decision path and use ranks.  Here $\rho =$ `r format( first40.spearman$estimate, digits = 3 )` with $P =$ `r format( first40.spearman$p.value, digits = 2 )`.  Because of the ties, `R` warns that this *P*-value is only an approximation, which is exactly the situation where the decision path says to permute.
+
+
+## Permuting Under the Null
+
+:::{.callout-tip title="Question"}
+**Question 8:** Using a permutation approach, define the distribution of correlation values between these two variables, assuming that the null hypothesis is actually true.  Plot these as a histogram that includes the observed correlation, and estimate the *P*-value.
+:::
+
+```{r}
+# Make a data.frame with an Estimate column ("Original", then 999 "Permuted")
+#  and a rho column (the observed correlation, then 999 NA values).
+x <- first40$AirTempF
+y <- first40$BP_HG
+df <- data.frame( Estimate = factor( c( "Original",
+                                        rep("Permuted", 999))),
+                  rho = c( first40.spearman$estimate,
+                           rep(NA, 999)) )
+
+# Set a seed, then loop over rows 2 to 1000:
+#  shuffle one of the variables with sample() and store the new correlation.
+set.seed( 543 )
+for( i in 2:1000 ) {
+  yhat <- sample( y,
+                  size = length(y),
+                  replace = FALSE )
+  df$rho[i] <- cor( x, yhat, method = "spearman" )
+}
+
+# Plot the histogram of rho, filled by Estimate.
+ggplot( df ) +
+  geom_histogram( aes( rho, fill = Estimate ), bins = 30 )
+
+# The P-value is the fraction of the 1,000 values at least as extreme as the original.
+P_perm <- sum( abs( df$rho ) >= abs( df$rho[1] ) ) / 1000
+P_perm
+```
+
+The observed $\rho$ sits far out in the left tail, beyond essentially all of the permuted values, and the permutation *P*-value is `r P_perm`.  Taken at face value, temperature and pressure are significantly (and negatively) correlated.
+
+That looks like a clear result.  Before we believe it, let's look at how these readings were collected.
+
+```{r}
+#| layout-ncol: 2
+# Add a column numbering the readings 1 to 40 to first40.
+first40 <- first40 |>
+  mutate( Reading = 1:40 )
+
+# Plot AirTempF against that reading number.
+ggplot( first40, aes( Reading, AirTempF ) ) +
+  geom_line() +
+  geom_point()
+
+# Plot BP_HG against that reading number.
+ggplot( first40, aes( Reading, BP_HG ) ) +
+  geom_line() +
+  geom_point()
+```
+
+:::{.callout-tip title="Question"}
+**Question 9:** Why should we not trust the *P*-value from your permutation test?  What does shuffling assume about these readings, and what do your plots show?
+:::
+
+Shuffling assumes the readings are *exchangeable*: if $H_O$ is true, any ordering of pressure is as likely as any other, so each reading is an independent draw.  The plots show that is not true here.  Each reading is very close to the one 15 minutes before it, and both variables drift smoothly over the morning: pressure trends one way while temperature trends the other.  The negative correlation is mostly two trends over time lining up.  Shuffling destroys that time structure, so the permuted correlations bunch up near zero, far tighter than the correlations we would see between two *unrelated* series that each drift over time.  The observed value looks extreme only because the null distribution is too narrow, so the *P*-value is far too small.  These 40 readings are really closer to a handful of independent pieces of information than to 40.
+
+:::{.callout-tip title="Question"}
+**Question 10:** Why does the same concern apply to the narrow confidence interval you found in Question 2, even though it was based on thousands of readings?  And why was shuffling not a problem for the beer styles?
+:::
+
+The Pearson confidence interval also assumes every reading is an independent observation, and its width shrinks with the number of readings.  The full data set is still a series of 15-minute readings, each similar to its neighbors, so the `r format( nrow( rice ), big.mark = "," )` readings carry far less independent information than their count suggests.  Treating them as independent makes the interval much narrower than it should be.  More data from the same autocorrelated series does not fix that; it just makes the false precision look more convincing.
+
+The beer styles are different: each row is a separate style, and there is no ordering in which one style's gravity depends on the style listed before it.  So the styles are reasonably exchangeable, and shuffling one variable is a fair picture of what $H_O$ looks like.
